@@ -12,10 +12,9 @@ class User(db.Model, UserMixin):
 class GameData(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    stage = db.Column(db.Integer, nullable=False, default=1)
-    question_index = db.Column(db.Integer, nullable=False, default=0)
-    score = db.Column(db.Integer, nullable=False, default=0)
-    progress = db.Column(db.Integer, nullable=False, default=0)
+    score = db.Column(db.Integer, default=0, nullable=False)
+    progress = db.Column(db.Integer, default=0, nullable=False)
+    stage = db.Column(db.Integer, default=1, nullable=False)
 
 class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True)

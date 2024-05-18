@@ -78,18 +78,22 @@ def answer():
 
 def update_score(user_id, roll):
     game_data = GameData.query.filter_by(user_id=user_id).first()
-    if not game_data:
-        game_data = GameData(user_id=user_id)
-        db.session.add(game_data)
+    if game_data is None:
+        # Handle the case where game_data is not found
+        return
+    
+    if game_data.score is None:
+        game_data.score = 0
 
     game_data.score += roll
     game_data.progress += 1
 
-    if game_data.progress == 30:
-        flash('You completed the first stage!', 'info')
-        game_data.stage = 2
+    if game_data.progress >= 30:
+        if game_data.stage == 1:
+            game_data.stage = 2
+        elif game_data.stage == 2:
+            game_data.stage = 1
         game_data.progress = 0
-        game_data.score = 0  # Reset score for the second stage
 
     db.session.commit()
 
