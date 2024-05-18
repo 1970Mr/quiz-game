@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="jumbotron text-center">
+        <h1 class="display-4">Welcome to the Quiz Game</h1>
+        {% if current_user.is_authenticated %}
+            <p class="lead">Start by selecting a category:</p>
+            <a class="btn btn-primary btn-lg" href="{{ url_for('main.select_category') }}" role="button">Select Category</a>
+        {% else %}
+            <p class="lead">Please <a href="{{ url_for('main.login') }}">login</a> or <a href="{{ url_for('main.register') }}">register</a> to start playing.</p>
+        {% endif %}
+    </div>
+{% endblock %}

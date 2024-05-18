@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title">Select a Category</h2>
+            <ul class="list-group">
+                <li class="list-group-item"><a href="{{ url_for('main.question', category='general') }}">General Knowledge</a></li>
+                <li class="list-group-item"><a href="{{ url_for('main.question', category='math') }}">Math</a></li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}

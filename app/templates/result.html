@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title">Game Result</h2>
+            <p>Stage: {{ game_data.stage }}</p>
+            <p>Score: {{ game_data.score }}</p>
+            <p>Progress: {{ game_data.progress }}/30</p>
+            {% if game_data.stage == 1 %}
+                <p>Keep going to complete the first stage!</p>
+            {% elif game_data.stage == 2 %}
+                <p>You have entered the second stage. Keep it up!</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
