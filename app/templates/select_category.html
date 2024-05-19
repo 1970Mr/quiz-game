@@ -1,12 +1,32 @@
 {% extends "base.html" %}
 {% block content %}
-    <div class="card">
-        <div class="card-body">
-            <h2 class="card-title">Select a Category</h2>
-            <ul class="list-group">
-                <li class="list-group-item"><a href="{{ url_for('main.question', category='general') }}">General Knowledge</a></li>
-                <li class="list-group-item"><a href="{{ url_for('main.question', category='math') }}">Math</a></li>
-            </ul>
+<div class="container mt-4">
+
+    <h2>Select a Category</h2>
+    <div class="list-group mt-4">
+        <a href="{{ url_for('main.question', category='general') }}" class="list-group-item list-group-item-action">General Knowledge</a>
+        <a href="{{ url_for('main.question', category='math') }}" class="list-group-item list-group-item-action">Mathematics</a>
+    </div>
+
+    <div class="my-5">
+        {% if stage == 1 %}
+        <h5>Stage 1: {{ score }}</h5>
+        {% elif stage == 2 %}
+        <h5>Stage 2: {{ score }}</h5>
+        {% endif %}
+        <div class="progress my-3" style="height: 2rem">
+            {% if stage == 1 %}
+            <div class="progress-bar bg-success" role="progressbar" style="width: {{ progress * 100 / 13 }}%; height: 2rem;" aria-valuenow="{{ progress }}" aria-valuemin="0"
+                 aria-valuemax="13">
+                {{ progress }} / 13
+            </div>
+            {% elif stage == 2 %}
+            <div class="progress-bar bg-danger" role="progressbar" style="width: {{ (13 - progress) * 100 / 13 }}%; height: 2rem;" aria-valuenow="{{ 13 - progress }}" aria-valuemin="0"
+                 aria-valuemax="13">
+                {{ 13 - progress }} / 13
+            </div>
+            {% endif %}
         </div>
     </div>
+</div>
 {% endblock %}

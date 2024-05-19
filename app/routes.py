@@ -5,7 +5,18 @@ from app.models import User, Question, GameData
 from app.forms import RegistrationForm, LoginForm
 from random import randint
 
+import logging
+from pprint import pformat
+
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+
+def log(data):
+    print('================================')
+    logging.debug(pformat(data))
+    print('================================')
+
 main = Blueprint('main', __name__)
+
 
 @main.route("/")
 @main.route("/home")
@@ -46,10 +57,11 @@ def logout():
     logout_user()
     return redirect(url_for('main.home'))
 
-@main.route("/select_category")
+@main.route('/select_category')
 @login_required
 def select_category():
-    return render_template('select_category.html', title='Select Category')
+    game_data = GameData.query.filter_by(user_id=current_user.id).first()
+    return render_template('select_category.html', stage=game_data.stage, progress=game_data.progress, score=game_data.score)
 
 @main.route("/question/<category>")
 @login_required
@@ -57,6 +69,14 @@ def question(category):
     question = Question.query.filter_by(category=category).order_by(db.func.random()).first()
     session['current_category'] = category
     session['question_id'] = question.id
+
+    log(question.id)
+    game_data = GameData.query.filter_by(user_id=current_user.id).first()
+    if game_data is None:
+        game_data = GameData(user_id=current_user.id, stage=1, progress=0, score=0)
+        db.session.add(game_data)
+        db.session.commit()
+
     return render_template('question.html', title='Question', question=question)
 
 @main.route("/answer", methods=['POST'])
@@ -78,21 +98,25 @@ def answer():
 
 def update_score(user_id, roll):
     game_data = GameData.query.filter_by(user_id=user_id).first()
-    if game_data is None:
-        # Handle the case where game_data is not found
-        return
-    
+
     if game_data.score is None:
         game_data.score = 0
 
-    game_data.score += roll
     game_data.progress += 1
 
-    if game_data.progress >= 30:
+    # Change score
+    if game_data.stage == 1:
+        game_data.score += roll
+    elif game_data.stage == 2:
+        game_data.score -= roll
+
+    # Change stage
+    if game_data.progress >= 13:
         if game_data.stage == 1:
             game_data.stage = 2
         elif game_data.stage == 2:
             game_data.stage = 1
+#             return redirect(url_for('main.success_result'))
         game_data.progress = 0
 
     db.session.commit()
