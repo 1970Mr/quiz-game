@@ -2,6 +2,9 @@ import json
 from app import create_app, db
 from app.models import Question
 
+app = create_app()
+app.app_context().push()
+
 def import_questions(json_file):
     with open(json_file, 'r') as file:
         questions = json.load(file)
@@ -22,5 +25,7 @@ def import_questions(json_file):
 if __name__ == "__main__":
     app = create_app()
     with app.app_context():
+        db.drop_all()
+        db.create_all()
         import_questions('data/questions.json')
         print("Questions imported successfully!")
