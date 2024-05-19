@@ -1,0 +1,818 @@
+[
+  {
+    "category": "math",
+    "question_text": "What is 2+2?",
+    "correct_answer": "4",
+    "wrong_answer1": "3",
+    "wrong_answer2": "5",
+    "wrong_answer3": "6"
+  },
+  {
+    "category": "math",
+    "question_text": "What is the square root of 16?",
+    "correct_answer": "4",
+    "wrong_answer1": "2",
+    "wrong_answer2": "6",
+    "wrong_answer3": "8"
+  },
+  {
+    "category": "math",
+    "question_text": "What is 7 * 6?",
+    "correct_answer": "42",
+    "wrong_answer1": "36",
+    "wrong_answer2": "48",
+    "wrong_answer3": "54"
+  },
+  {
+    "category": "math",
+    "question_text": "What is 10 / 2?",
+    "correct_answer": "5",
+    "wrong_answer1": "4",
+    "wrong_answer2": "6",
+    "wrong_answer3": "8"
+  },
+  {
+    "category": "math",
+    "question_text": "What is 9 - 3?",
+    "correct_answer": "6",
+    "wrong_answer1": "5",
+    "wrong_answer2": "7",
+    "wrong_answer3": "8"
+  },
+  {
+    "category": "math",
+    "question_text": "What is the value of π (Pi) rounded to two decimal places?",
+    "correct_answer": "3.14",
+    "wrong_answer1": "3.15",
+    "wrong_answer2": "3.13",
+    "wrong_answer3": "3.16"
+  },
+  {
+    "category": "math",
+    "question_text": "What is the next prime number after 7?",
+    "correct_answer": "11",
+    "wrong_answer1": "9",
+    "wrong_answer2": "10",
+    "wrong_answer3": "13"
+  },
+  {
+    "category": "math",
+    "question_text": "What is 5 + 9?",
+    "correct_answer": "14",
+    "wrong_answer1": "12",
+    "wrong_answer2": "13",
+    "wrong_answer3": "15"
+  },
+  {
+    "category": "math",
+    "question_text": "What is 12 * 12?",
+    "correct_answer": "144",
+    "wrong_answer1": "142",
+    "wrong_answer2": "148",
+    "wrong_answer3": "150"
+  },
+  {
+    "category": "math",
+    "question_text": "What is 81 / 9?",
+    "correct_answer": "9",
+    "wrong_answer1": "8",
+    "wrong_answer2": "10",
+    "wrong_answer3": "11"
+  },
+  {
+    "category": "math",
+    "question_text": "What is 25% of 200?",
+    "correct_answer": "50",
+    "wrong_answer1": "25",
+    "wrong_answer2": "100",
+    "wrong_answer3": "75"
+  },
+  {
+    "category": "math",
+    "question_text": "What is the result of 3^3?",
+    "correct_answer": "27",
+    "wrong_answer1": "9",
+    "wrong_answer2": "18",
+    "wrong_answer3": "30"
+  },
+  {
+    "category": "math",
+    "question_text": "What is 45 + 55?",
+    "correct_answer": "100",
+    "wrong_answer1": "90",
+    "wrong_answer2": "95",
+    "wrong_answer3": "105"
+  },
+  {
+    "category": "math",
+    "question_text": "What is 18 - 7?",
+    "correct_answer": "11",
+    "wrong_answer1": "10",
+    "wrong_answer2": "12",
+    "wrong_answer3": "13"
+  },
+  {
+    "category": "math",
+    "question_text": "What is the smallest prime number?",
+    "correct_answer": "2",
+    "wrong_answer1": "1",
+    "wrong_answer2": "3",
+    "wrong_answer3": "5"
+  },
+  {
+    "category": "math",
+    "question_text": "What is the greatest common divisor (GCD) of 8 and 12?",
+    "correct_answer": "4",
+    "wrong_answer1": "2",
+    "wrong_answer2": "6",
+    "wrong_answer3": "8"
+  },
+  {
+    "category": "math",
+    "question_text": "What is the sum of the angles in a triangle?",
+    "correct_answer": "180 degrees",
+    "wrong_answer1": "90 degrees",
+    "wrong_answer2": "270 degrees",
+    "wrong_answer3": "360 degrees"
+  },
+  {
+    "category": "math",
+    "question_text": "What is 3! (3 factorial)?",
+    "correct_answer": "6",
+    "wrong_answer1": "3",
+    "wrong_answer2": "9",
+    "wrong_answer3": "12"
+  },
+  {
+    "category": "math",
+    "question_text": "What is 1000 / 10?",
+    "correct_answer": "100",
+    "wrong_answer1": "10",
+    "wrong_answer2": "50",
+    "wrong_answer3": "200"
+  },
+  {
+    "category": "math",
+    "question_text": "What is 19 + 6?",
+    "correct_answer": "25",
+    "wrong_answer1": "24",
+    "wrong_answer2": "26",
+    "wrong_answer3": "23"
+  },
+  {
+    "category": "math",
+    "question_text": "What is the cube root of 27?",
+    "correct_answer": "3",
+    "wrong_answer1": "9",
+    "wrong_answer2": "6",
+    "wrong_answer3": "2"
+  },
+  {
+    "category": "math",
+    "question_text": "What is the value of the expression 2x when x = 5?",
+    "correct_answer": "10",
+    "wrong_answer1": "5",
+    "wrong_answer2": "7",
+    "wrong_answer3": "12"
+  },
+  {
+    "category": "math",
+    "question_text": "What is 2 to the power of 5?",
+    "correct_answer": "32",
+    "wrong_answer1": "16",
+    "wrong_answer2": "64",
+    "wrong_answer3": "25"
+  },
+  {
+    "category": "math",
+    "question_text": "What is the result of 6 + 7 * 2?",
+    "correct_answer": "20",
+    "wrong_answer1": "26",
+    "wrong_answer2": "19",
+    "wrong_answer3": "18"
+  },
+  {
+    "category": "math",
+    "question_text": "What is the perimeter of a square with side length 4?",
+    "correct_answer": "16",
+    "wrong_answer1": "8",
+    "wrong_answer2": "12",
+    "wrong_answer3": "14"
+  },
+  {
+    "category": "math",
+    "question_text": "What is the area of a triangle with base 4 and height 5?",
+    "correct_answer": "10",
+    "wrong_answer1": "20",
+    "wrong_answer2": "15",
+    "wrong_answer3": "12"
+  },
+  {
+    "category": "math",
+    "question_text": "What is the greatest common divisor (GCD) of 24 and 36?",
+    "correct_answer": "12",
+    "wrong_answer1": "6",
+    "wrong_answer2": "8",
+    "wrong_answer3": "18"
+  },
+  {
+    "category": "math",
+    "question_text": "What is the lowest common multiple (LCM) of 3 and 4?",
+    "correct_answer": "12",
+    "wrong_answer1": "6",
+    "wrong_answer2": "9",
+    "wrong_answer3": "16"
+  },
+  {
+    "category": "math",
+    "question_text": "What is 8^2?",
+    "correct_answer": "64",
+    "wrong_answer1": "16",
+    "wrong_answer2": "32",
+    "wrong_answer3": "48"
+  },
+  {
+    "category": "math",
+    "question_text": "What is the value of the expression 5y when y = 3?",
+    "correct_answer": "15",
+    "wrong_answer1": "8",
+    "wrong_answer2": "12",
+    "wrong_answer3": "18"
+  },
+  {
+    "category": "math",
+    "question_text": "What is the result of 9 - 2 * 3?",
+    "correct_answer": "3",
+    "wrong_answer1": "21",
+    "wrong_answer2": "6",
+    "wrong_answer3": "1"
+  },
+  {
+    "category": "math",
+    "question_text": "What is the area of a rectangle with length 6 and width 3?",
+    "correct_answer": "18",
+    "wrong_answer1": "9",
+    "wrong_answer2": "12",
+    "wrong_answer3": "15"
+  },
+  {
+    "category": "math",
+    "question_text": "What is the square of 12?",
+    "correct_answer": "144",
+    "wrong_answer1": "122",
+    "wrong_answer2": "132",
+    "wrong_answer3": "156"
+  },
+  {
+    "category": "math",
+    "question_text": "What is the perimeter of a rectangle with length 7 and width 3?",
+    "correct_answer": "20",
+    "wrong_answer1": "14",
+    "wrong_answer2": "18",
+    "wrong_answer3": "22"
+  },
+  {
+    "category": "math",
+    "question_text": "What is the value of the expression 4a when a = 4?",
+    "correct_answer": "16",
+    "wrong_answer1": "8",
+    "wrong_answer2": "12",
+    "wrong_answer3": "20"
+  },
+  {
+    "category": "math",
+    "question_text": "What is the sum of the angles in a quadrilateral?",
+    "correct_answer": "360 degrees",
+    "wrong_answer1": "180 degrees",
+    "wrong_answer2": "270 degrees",
+    "wrong_answer3": "450 degrees"
+  },
+  {
+    "category": "math",
+    "question_text": "What is the value of the expression 3b + 2 when b = 4?",
+    "correct_answer": "14",
+    "wrong_answer1": "10",
+    "wrong_answer2": "12",
+    "wrong_answer3": "16"
+  },
+  {
+    "category": "math",
+    "question_text": "What is the result of 8 / 4 + 2?",
+    "correct_answer": "4",
+    "wrong_answer1": "2",
+    "wrong_answer2": "6",
+    "wrong_answer3": "8"
+  },
+  {
+    "category": "math",
+    "question_text": "What is the result of 2x + 3 when x = 5?",
+    "correct_answer": "13",
+    "wrong_answer1": "10",
+    "wrong_answer2": "12",
+    "wrong_answer3": "15"
+  },
+  {
+    "category": "math",
+    "question_text": "What is the value of the expression 6y - 4 when y = 3?",
+    "correct_answer": "14",
+    "wrong_answer1": "18",
+    "wrong_answer2": "10",
+    "wrong_answer3": "12"
+  },
+  {
+    "category": "math",
+    "question_text": "What is the perimeter of a triangle with sides 3, 4, and 5?",
+    "correct_answer": "12",
+    "wrong_answer1": "10",
+    "wrong_answer2": "11",
+    "wrong_answer3": "13"
+  },
+  {
+    "category": "math",
+    "question_text": "What is the product of 5 and 9?",
+    "correct_answer": "45",
+    "wrong_answer1": "40",
+    "wrong_answer2": "50",
+    "wrong_answer3": "55"
+  },
+  {
+    "category": "math",
+    "question_text": "What is the smallest positive integer?",
+    "correct_answer": "1",
+    "wrong_answer1": "0",
+    "wrong_answer2": "2",
+    "wrong_answer3": "3"
+  },
+  {
+    "category": "math",
+    "question_text": "What is the value of the expression 2z - 3 when z = 6?",
+    "correct_answer": "9",
+    "wrong_answer1": "12",
+    "wrong_answer2": "15",
+    "wrong_answer3": "18"
+  },
+  {
+    "category": "math",
+    "question_text": "What is the cube of 2?",
+    "correct_answer": "8",
+    "wrong_answer1": "4",
+    "wrong_answer2": "6",
+    "wrong_answer3": "10"
+  },
+  {
+    "category": "math",
+    "question_text": "What is the square root of 49?",
+    "correct_answer": "7",
+    "wrong_answer1": "6",
+    "wrong_answer2": "8",
+    "wrong_answer3": "9"
+  },
+  {
+    "category": "math",
+    "question_text": "What is the value of the expression 4x + 5 when x = 2?",
+    "correct_answer": "13",
+    "wrong_answer1": "8",
+    "wrong_answer2": "12",
+    "wrong_answer3": "14"
+  },
+  {
+    "category": "math",
+    "question_text": "What is the sum of 17 and 19?",
+    "correct_answer": "36",
+    "wrong_answer1": "34",
+    "wrong_answer2": "35",
+    "wrong_answer3": "38"
+  },
+  {
+    "category": "general",
+    "question_text": "What is the chemical symbol for water?",
+    "correct_answer": "H2O",
+    "wrong_answer1": "O2",
+    "wrong_answer2": "HO",
+    "wrong_answer3": "H2"
+  },
+  {
+    "category": "general",
+    "question_text": "What planet is known as the Red Planet?",
+    "correct_answer": "Mars",
+    "wrong_answer1": "Jupiter",
+    "wrong_answer2": "Saturn",
+    "wrong_answer3": "Venus"
+  },
+  {
+    "category": "general",
+    "question_text": "What is the process by which plants make their food?",
+    "correct_answer": "Photosynthesis",
+    "wrong_answer1": "Respiration",
+    "wrong_answer2": "Digestion",
+    "wrong_answer3": "Fermentation"
+  },
+  {
+    "category": "general",
+    "question_text": "What is the chemical symbol for gold?",
+    "correct_answer": "Au",
+    "wrong_answer1": "Ag",
+    "wrong_answer2": "Fe",
+    "wrong_answer3": "Pb"
+  },
+  {
+    "category": "general",
+    "question_text": "What gas do plants absorb from the atmosphere?",
+    "correct_answer": "Carbon dioxide",
+    "wrong_answer1": "Oxygen",
+    "wrong_answer2": "Nitrogen",
+    "wrong_answer3": "Hydrogen"
+  },
+  {
+    "category": "general",
+    "question_text": "What is the powerhouse of the cell?",
+    "correct_answer": "Mitochondria",
+    "wrong_answer1": "Nucleus",
+    "wrong_answer2": "Ribosome",
+    "wrong_answer3": "Chloroplast"
+  },
+  {
+    "category": "general",
+    "question_text": "What is the chemical formula for salt?",
+    "correct_answer": "NaCl",
+    "wrong_answer1": "KCl",
+    "wrong_answer2": "Na2SO4",
+    "wrong_answer3": "H2SO4"
+  },
+  {
+    "category": "general",
+    "question_text": "What planet is closest to the sun?",
+    "correct_answer": "Mercury",
+    "wrong_answer1": "Venus",
+    "wrong_answer2": "Earth",
+    "wrong_answer3": "Mars"
+  },
+  {
+    "category": "general",
+    "question_text": "What is the largest planet in our solar system?",
+    "correct_answer": "Jupiter",
+    "wrong_answer1": "Saturn",
+    "wrong_answer2": "Uranus",
+    "wrong_answer3": "Neptune"
+  },
+  {
+    "category": "general",
+    "question_text": "What element does 'O' represent on the periodic table?",
+    "correct_answer": "Oxygen",
+    "wrong_answer1": "Osmium",
+    "wrong_answer2": "Gold",
+    "wrong_answer3": "Oganesson"
+  },
+  {
+    "category": "general",
+    "question_text": "What is the hardest natural substance on Earth?",
+    "correct_answer": "Diamond",
+    "wrong_answer1": "Gold",
+    "wrong_answer2": "Iron",
+    "wrong_answer3": "Platinum"
+  },
+  {
+    "category": "general",
+    "question_text": "What gas do humans exhale?",
+    "correct_answer": "Carbon dioxide",
+    "wrong_answer1": "Oxygen",
+    "wrong_answer2": "Nitrogen",
+    "wrong_answer3": "Hydrogen"
+  },
+  {
+    "category": "general",
+    "question_text": "What is the boiling point of water?",
+    "correct_answer": "100°C",
+    "wrong_answer1": "0°C",
+    "wrong_answer2": "50°C",
+    "wrong_answer3": "200°C"
+  },
+  {
+    "category": "general",
+    "question_text": "What organ is primarily responsible for pumping blood?",
+    "correct_answer": "Heart",
+    "wrong_answer1": "Liver",
+    "wrong_answer2": "Lungs",
+    "wrong_answer3": "Kidneys"
+  },
+  {
+    "category": "general",
+    "question_text": "What is the chemical symbol for iron?",
+    "correct_answer": "Fe",
+    "wrong_answer1": "Ir",
+    "wrong_answer2": "I",
+    "wrong_answer3": "In"
+  },
+  {
+    "category": "general",
+    "question_text": "What gas do plants release during photosynthesis?",
+    "correct_answer": "Oxygen",
+    "wrong_answer1": "Carbon dioxide",
+    "wrong_answer2": "Nitrogen",
+    "wrong_answer3": "Hydrogen"
+  },
+  {
+    "category": "general",
+    "question_text": "What is the chemical symbol for helium?",
+    "correct_answer": "He",
+    "wrong_answer1": "H",
+    "wrong_answer2": "Ho",
+    "wrong_answer3": "Hm"
+  },
+  {
+    "category": "general",
+    "question_text": "What is the process of turning water into vapor?",
+    "correct_answer": "Evaporation",
+    "wrong_answer1": "Condensation",
+    "wrong_answer2": "Sublimation",
+    "wrong_answer3": "Boiling"
+  },
+  {
+    "category": "general",
+    "question_text": "What is the chemical symbol for sodium?",
+    "correct_answer": "Na",
+    "wrong_answer1": "So",
+    "wrong_answer2": "Sa",
+    "wrong_answer3": "N"
+  },
+  {
+    "category": "general",
+    "question_text": "What is the densest element?",
+    "correct_answer": "Osmium",
+    "wrong_answer1": "Iron",
+    "wrong_answer2": "Platinum",
+    "wrong_answer3": "Lead"
+  },
+  {
+    "category": "general",
+    "question_text": "What gas do plants need for photosynthesis?",
+    "correct_answer": "Carbon dioxide",
+    "wrong_answer1": "Oxygen",
+    "wrong_answer2": "Nitrogen",
+    "wrong_answer3": "Hydrogen"
+  },
+  {
+    "category": "general",
+    "question_text": "What is the chemical symbol for potassium?",
+    "correct_answer": "K",
+    "wrong_answer1": "P",
+    "wrong_answer2": "Ka",
+    "wrong_answer3": "Ke"
+  },
+  {
+    "category": "general",
+    "question_text": "What is the chemical symbol for silver?",
+    "correct_answer": "Ag",
+    "wrong_answer1": "Au",
+    "wrong_answer2": "Ar",
+    "wrong_answer3": "Al"
+  },
+  {
+    "category": "general",
+    "question_text": "What is the process of liquid turning into vapor?",
+    "correct_answer": "Boiling",
+    "wrong_answer1": "Evaporation",
+    "wrong_answer2": "Condensation",
+    "wrong_answer3": "Sublimation"
+  },
+  {
+    "category": "general",
+    "question_text": "What is the chemical symbol for copper?",
+    "correct_answer": "Cu",
+    "wrong_answer1": "Co",
+    "wrong_answer2": "Ca",
+    "wrong_answer3": "Cr"
+  },
+  {
+    "category": "general",
+    "question_text": "What gas is responsible for the ozone layer?",
+    "correct_answer": "Ozone",
+    "wrong_answer1": "Oxygen",
+    "wrong_answer2": "Carbon dioxide",
+    "wrong_answer3": "Nitrogen"
+  },
+  {
+    "category": "general",
+    "question_text": "What is the process of a solid turning into a gas without becoming a liquid?",
+    "correct_answer": "Sublimation",
+    "wrong_answer1": "Evaporation",
+    "wrong_answer2": "Condensation",
+    "wrong_answer3": "Boiling"
+  },
+  {
+    "category": "general",
+    "question_text": "What is the chemical symbol for nitrogen?",
+    "correct_answer": "N",
+    "wrong_answer1": "Ni",
+    "wrong_answer2": "Na",
+    "wrong_answer3": "Ne"
+  },
+  {
+    "category": "general",
+    "question_text": "What gas do humans inhale?",
+    "correct_answer": "Oxygen",
+    "wrong_answer1": "Carbon dioxide",
+    "wrong_answer2": "Nitrogen",
+    "wrong_answer3": "Hydrogen"
+  },
+  {
+    "category": "general",
+    "question_text": "What is the chemical symbol for carbon?",
+    "correct_answer": "C",
+    "wrong_answer1": "Ca",
+    "wrong_answer2": "Co",
+    "wrong_answer3": "Cr"
+  },
+  {
+    "category": "general",
+    "question_text": "What is the process by which water vapor turns into liquid water?",
+    "correct_answer": "Condensation",
+    "wrong_answer1": "Evaporation",
+    "wrong_answer2": "Sublimation",
+    "wrong_answer3": "Boiling"
+  },
+  {
+    "category": "general",
+    "question_text": "What is the chemical symbol for hydrogen?",
+    "correct_answer": "H",
+    "wrong_answer1": "He",
+    "wrong_answer2": "Ho",
+    "wrong_answer3": "Hm"
+  },
+  {
+    "category": "general",
+    "question_text": "What gas is produced during respiration?",
+    "correct_answer": "Carbon dioxide",
+    "wrong_answer1": "Oxygen",
+    "wrong_answer2": "Nitrogen",
+    "wrong_answer3": "Hydrogen"
+  },
+  {
+    "category": "general",
+    "question_text": "What is the chemical symbol for oxygen?",
+    "correct_answer": "O",
+    "wrong_answer1": "Os",
+    "wrong_answer2": "On",
+    "wrong_answer3": "Og"
+  },
+  {
+    "category": "general",
+    "question_text": "What is the process of changing from a solid to a liquid?",
+    "correct_answer": "Melting",
+    "wrong_answer1": "Freezing",
+    "wrong_answer2": "Evaporation",
+    "wrong_answer3": "Sublimation"
+  },
+  {
+    "category": "general",
+    "question_text": "What gas do humans require for respiration?",
+    "correct_answer": "Oxygen",
+    "wrong_answer1": "Carbon dioxide",
+    "wrong_answer2": "Nitrogen",
+    "wrong_answer3": "Hydrogen"
+  },
+  {
+    "category": "general",
+    "question_text": "What is the chemical symbol for calcium?",
+    "correct_answer": "Ca",
+    "wrong_answer1": "C",
+    "wrong_answer2": "Co",
+    "wrong_answer3": "Cl"
+  },
+  {
+    "category": "general",
+    "question_text": "What is the process of changing from a liquid to a gas?",
+    "correct_answer": "Vaporization",
+    "wrong_answer1": "Condensation",
+    "wrong_answer2": "Melting",
+    "wrong_answer3": "Freezing"
+  },
+  {
+    "category": "general",
+    "question_text": "What is the chemical symbol for lead?",
+    "correct_answer": "Pb",
+    "wrong_answer1": "Pl",
+    "wrong_answer2": "P",
+    "wrong_answer3": "Ld"
+  },
+  {
+    "category": "general",
+    "question_text": "What is the process of a gas turning into a liquid?",
+    "correct_answer": "Condensation",
+    "wrong_answer1": "Evaporation",
+    "wrong_answer2": "Sublimation",
+    "wrong_answer3": "Boiling"
+  },
+  {
+    "category": "general",
+    "question_text": "What is the chemical symbol for silicon?",
+    "correct_answer": "Si",
+    "wrong_answer1": "Sn",
+    "wrong_answer2": "S",
+    "wrong_answer3": "Se"
+  },
+  {
+    "category": "general",
+    "question_text": "What is the process of changing from a gas to a liquid?",
+    "correct_answer": "Condensation",
+    "wrong_answer1": "Evaporation",
+    "wrong_answer2": "Sublimation",
+    "wrong_answer3": "Boiling"
+  },
+  {
+    "category": "general",
+    "question_text": "What is the chemical symbol for mercury?",
+    "correct_answer": "Hg",
+    "wrong_answer1": "Me",
+    "wrong_answer2": "M",
+    "wrong_answer3": "Mg"
+  },
+  {
+    "category": "general",
+    "question_text": "What gas do cars produce when burning fuel?",
+    "correct_answer": "Carbon dioxide",
+    "wrong_answer1": "Oxygen",
+    "wrong_answer2": "Nitrogen",
+    "wrong_answer3": "Hydrogen"
+  },
+  {
+    "category": "general",
+    "question_text": "What is the chemical symbol for uranium?",
+    "correct_answer": "U",
+    "wrong_answer1": "Ur",
+    "wrong_answer2": "Un",
+    "wrong_answer3": "Ul"
+  },
+  {
+    "category": "general",
+    "question_text": "What is the process of a liquid turning into a gas?",
+    "correct_answer": "Evaporation",
+    "wrong_answer1": "Condensation",
+    "wrong_answer2": "Sublimation",
+    "wrong_answer3": "Boiling"
+  },
+  {
+    "category": "general",
+    "question_text": "What is the chemical symbol for chlorine?",
+    "correct_answer": "Cl",
+    "wrong_answer1": "C",
+    "wrong_answer2": "Cr",
+    "wrong_answer3": "Ca"
+  },
+  {
+    "category": "general",
+    "question_text": "What gas do plants release during respiration?",
+    "correct_answer": "Oxygen",
+    "wrong_answer1": "Carbon dioxide",
+    "wrong_answer2": "Nitrogen",
+    "wrong_answer3": "Hydrogen"
+  },
+  {
+    "category": "general",
+    "question_text": "What is the chemical symbol for phosphorus?",
+    "correct_answer": "P",
+    "wrong_answer1": "Ph",
+    "wrong_answer2": "Po",
+    "wrong_answer3": "Ps"
+  },
+  {
+    "category": "general",
+    "question_text": "What gas makes up the majority of Earth's atmosphere?",
+    "correct_answer": "Nitrogen",
+    "wrong_answer1": "Oxygen",
+    "wrong_answer2": "Carbon dioxide",
+    "wrong_answer3": "Argon"
+  },
+  {
+    "category": "general",
+    "question_text": "What is the chemical symbol for carbon dioxide?",
+    "correct_answer": "CO2",
+    "wrong_answer1": "CO",
+    "wrong_answer2": "C",
+    "wrong_answer3": "CD"
+  },
+  {
+    "category": "general",
+    "question_text": "What gas is used by plants during photosynthesis?",
+    "correct_answer": "Carbon dioxide",
+    "wrong_answer1": "Oxygen",
+    "wrong_answer2": "Nitrogen",
+    "wrong_answer3": "Hydrogen"
+  },
+  {
+    "category": "general",
+    "question_text": "What gas is used in balloons for lifting?",
+    "correct_answer": "Helium",
+    "wrong_answer1": "Hydrogen",
+    "wrong_answer2": "Oxygen",
+    "wrong_answer3": "Nitrogen"
+  },
+  {
+    "category": "general",
+    "question_text": "What is the chemical symbol for sulfur?",
+    "correct_answer": "S",
+    "wrong_answer1": "Su",
+    "wrong_answer2": "Sl",
+    "wrong_answer3": "Sr"
+  }
+]

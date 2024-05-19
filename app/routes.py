@@ -126,7 +126,7 @@ def update_score(user_id, roll):
     game_data.score += roll
 
     # Change stage or end game
-    if game_data.progress >= 7:
+    if game_data.progress >= 30:
         if game_data.stage == 1:
             game_data.stage = 2
             game_data.progress = 0
