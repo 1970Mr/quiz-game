@@ -92,26 +92,25 @@ def answer():
         flash(f'Correct! You rolled a {roll}.', 'success')
         update_score(current_user.id, roll)
     else:
-        flash('Incorrect! Try again.', 'danger')
+        flash('Incorrect! 6 points were deducted from you.', 'danger')
+        update_score(current_user.id, -6)
 
     return redirect(url_for('main.select_category'))
 
 def update_score(user_id, roll):
     game_data = GameData.query.filter_by(user_id=user_id).first()
-
     if game_data.score is None:
         game_data.score = 0
 
     game_data.progress += 1
 
     # Change score
-    if game_data.stage == 1:
-        game_data.score += roll
-    elif game_data.stage == 2:
-        game_data.score -= roll
+    if game_data.stage == 2 and roll > 0:
+        roll = -roll
+    game_data.score += roll
 
     # Change stage
-    if game_data.progress >= 13:
+    if game_data.progress >= 7:
         if game_data.stage == 1:
             game_data.stage = 2
         elif game_data.stage == 2:
