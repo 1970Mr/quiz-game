@@ -61,6 +61,15 @@ def logout():
 @login_required
 def select_category():
     game_data = GameData.query.filter_by(user_id=current_user.id).first()
+    if game_data is None:
+        game_data = GameData(user_id=current_user.id, stage=1, progress=0, score=0)
+        db.session.add(game_data)
+        db.session.commit()
+
+    if game_data.progress == 0 and game_data.stage == 1:
+        game_data.score = 0
+        db.session.commit()
+
     return render_template('select_category.html', stage=game_data.stage, progress=game_data.progress, score=game_data.score)
 
 @main.route("/question/<category>")
@@ -69,13 +78,6 @@ def question(category):
     question = Question.query.filter_by(category=category).order_by(db.func.random()).first()
     session['current_category'] = category
     session['question_id'] = question.id
-
-    log(question.id)
-    game_data = GameData.query.filter_by(user_id=current_user.id).first()
-    if game_data is None:
-        game_data = GameData(user_id=current_user.id, stage=1, progress=0, score=0)
-        db.session.add(game_data)
-        db.session.commit()
 
     return render_template('question.html', title='Question', question=question)
 
@@ -95,6 +97,16 @@ def answer():
         flash('Incorrect! 6 points were deducted from you.', 'danger')
         update_score(current_user.id, -6)
 
+    game_data = GameData.query.filter_by(user_id=current_user.id).first()
+
+    # Check if the game should end
+    if game_data.progress == 0 and game_data.stage == 2:
+        flash('Stage 1 complete! Moving to Stage 2.', 'info')
+        return redirect(url_for('main.select_category'))
+    elif game_data.progress == 0 and game_data.stage == 1:
+        flash('Stage 2 complete! The game is finished.', 'info')
+        return redirect(url_for('main.final_result'))
+
     return redirect(url_for('main.select_category'))
 
 def update_score(user_id, roll):
@@ -109,14 +121,14 @@ def update_score(user_id, roll):
         roll = -roll
     game_data.score += roll
 
-    # Change stage
+    # Change stage or end game
     if game_data.progress >= 7:
         if game_data.stage == 1:
             game_data.stage = 2
+            game_data.progress = 0
         elif game_data.stage == 2:
+            game_data.progress = 0
             game_data.stage = 1
-#             return redirect(url_for('main.success_result'))
-        game_data.progress = 0
 
     db.session.commit()
 
@@ -125,3 +137,9 @@ def update_score(user_id, roll):
 def result():
     game_data = GameData.query.filter_by(user_id=current_user.id).first()
     return render_template('result.html', title='Result', game_data=game_data)
+
+@main.route("/final_result")
+@login_required
+def final_result():
+    game_data = GameData.query.filter_by(user_id=current_user.id).first()
+    return render_template('final_result.html', title='Final Result', game_data=game_data)
