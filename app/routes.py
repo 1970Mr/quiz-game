@@ -3,21 +3,10 @@ from flask_login import login_user, current_user, logout_user, login_required
 from app import db, bcrypt
 from app.models import User, Question, GameData
 from app.forms import RegistrationForm, LoginForm
-from random import randint
+from random import randint, shuffle
 import time
 
-import logging
-from pprint import pformat
-
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
-
-def log(data):
-    print('================================')
-    logging.debug(pformat(data))
-    print('================================')
-
 main = Blueprint('main', __name__)
-
 
 @main.route("/")
 @main.route("/home")
@@ -81,7 +70,16 @@ def question(category):
     session['question_id'] = question.id
     session['start_time'] = time.time()
 
-    return render_template('question.html', title='Question', question=question)
+    # Create a list of answers and shuffle them
+    answers = [
+        (question.correct_answer, True),
+        (question.wrong_answer1, False),
+        (question.wrong_answer2, False),
+        (question.wrong_answer3, False)
+    ]
+    shuffle(answers)
+
+    return render_template('question.html', title='Question', question=question, answers=answers)
 
 @main.route("/answer", methods=['POST'])
 @login_required

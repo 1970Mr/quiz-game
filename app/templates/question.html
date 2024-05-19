@@ -5,30 +5,14 @@
         <h2 class="card-title">Question</h2>
         <p>{{ question.question_text }}</p>
         <form id="questionForm" method="POST" action="{{ url_for('main.answer') }}">
+            {% for answer, is_correct in answers %}
             <div class="form-check">
-                <input class="form-check-input" type="radio" name="answer" value="{{ question.correct_answer }}" id="answer1">
-                <label class="form-check-label" for="answer1">
-                    {{ question.correct_answer }}
+                <input class="form-check-input" type="radio" name="answer" value="{{ answer }}" id="answer{{ loop.index }}">
+                <label class="form-check-label" for="answer{{ loop.index }}">
+                    {{ answer }}
                 </label>
             </div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="answer" value="{{ question.wrong_answer1 }}" id="answer2">
-                <label class="form-check-label" for="answer2">
-                    {{ question.wrong_answer1 }}
-                </label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="answer" value="{{ question.wrong_answer2 }}" id="answer3">
-                <label class="form-check-label" for="answer3">
-                    {{ question.wrong_answer2 }}
-                </label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="answer" value="{{ question.wrong_answer3 }}" id="answer4">
-                <label class="form-check-label" for="answer4">
-                    {{ question.wrong_answer3 }}
-                </label>
-            </div>
+            {% endfor %}
             <button type="submit" class="btn btn-primary mt-3">Submit</button>
         </form>
         <div id="timer" class="mt-3">Time left: 25 seconds</div>
