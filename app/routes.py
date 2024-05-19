@@ -4,6 +4,7 @@ from app import db, bcrypt
 from app.models import User, Question, GameData
 from app.forms import RegistrationForm, LoginForm
 from random import randint
+import time
 
 import logging
 from pprint import pformat
@@ -78,6 +79,7 @@ def question(category):
     question = Question.query.filter_by(category=category).order_by(db.func.random()).first()
     session['current_category'] = category
     session['question_id'] = question.id
+    session['start_time'] = time.time()
 
     return render_template('question.html', title='Question', question=question)
 
@@ -86,10 +88,15 @@ def question(category):
 def answer():
     question_id = session.get('question_id')
     question = Question.query.get(question_id)
-    selected_answer = request.form['answer']
+    selected_answer = request.form.get('answer')
     category = session.get('current_category')
+    start_time = session.get('start_time')
+    current_time = time.time()
 
-    if selected_answer == question.correct_answer:
+    if start_time and current_time - start_time > 25:
+        flash('Time is up! 6 points were deducted from you.', 'danger')
+        update_score(current_user.id, -6)
+    elif selected_answer == question.correct_answer:
         roll = randint(1, 6)
         flash(f'Correct! You rolled a {roll}.', 'success')
         update_score(current_user.id, roll)
@@ -99,11 +106,10 @@ def answer():
 
     game_data = GameData.query.filter_by(user_id=current_user.id).first()
 
-    # Check if the game should end
-    if game_data.progress == 0 and game_data.stage == 2:
+    if game_data.progress == 0 and game_data.stage == 1:
         flash('Stage 1 complete! Moving to Stage 2.', 'info')
         return redirect(url_for('main.select_category'))
-    elif game_data.progress == 0 and game_data.stage == 1:
+    elif game_data.progress == 0 and game_data.stage == 2:
         flash('Stage 2 complete! The game is finished.', 'info')
         return redirect(url_for('main.final_result'))
 
