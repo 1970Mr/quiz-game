@@ -55,10 +55,6 @@ python load_data.py
 After seeding the sample data or importing questions, you can run the Flask application:
 
 ```bash
-python create_app.py
-```
-or
-```bash
 flask run
 ```
 
