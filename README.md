@@ -60,6 +60,20 @@ flask run
 
 Then, open your web browser and go to [http://localhost:5000/](http://localhost:5000/) to access the Quiz Game.
 
+## Running with Docker Compose
+
+You can also run the application using Docker and Docker Compose. This approach ensures that you don't need to manually set up a virtual environment or install dependencies locally.
+
+### Steps:
+
+1. Build and run the Docker container:
+
+    ```bash
+    docker-compose up --build
+    ```
+
+2. After the container is up and running, open your web browser and go to [http://localhost:5000/](http://localhost:5000/) to access the Quiz Game.
+
 ## Credits
 
 This project was created as a learning exercise by MR.1970. Feel free to contribute or use it as a basis for your own projects.
