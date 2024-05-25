@@ -6,6 +6,7 @@ import random
 app = create_app()
 app.app_context().push()
 
+
 def create_sample_users():
     users = [
         {"username": "user1", "email": "user1@example.com", "password": "password"},
@@ -18,13 +19,14 @@ def create_sample_users():
         db.session.add(user)
     db.session.commit()
 
+
 def create_sample_questions():
     categories = ['general', 'math']
     for category in categories:
         for i in range(150):  # 150 questions per category
             question = Question(
                 category=category,
-                question_text=f"Sample question {i+1} in {category} category?",
+                question_text=f"Sample question {i + 1} in {category} category?",
                 correct_answer="Correct Answer",
                 wrong_answer1="Wrong Answer 1",
                 wrong_answer2="Wrong Answer 2",
@@ -33,6 +35,7 @@ def create_sample_questions():
             db.session.add(question)
     db.session.commit()
 
+
 def create_sample_game_data():
     users = User.query.all()
     for user in users:
@@ -40,11 +43,13 @@ def create_sample_game_data():
         db.session.add(game_data)
     db.session.commit()
 
+
 def seed_database():
     create_sample_users()
     create_sample_questions()
     create_sample_game_data()
     print("Database seeded successfully!")
+
 
 if __name__ == "__main__":
     with app.app_context():
