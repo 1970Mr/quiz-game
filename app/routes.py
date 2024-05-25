@@ -23,9 +23,9 @@ def register():
         user = User(username=form.username.data, email=form.email.data.lower(), password=hashed_password)
         db.session.add(user)
         db.session.commit()
-        flash('Your account has been created! You are now able to log in', 'success')
+        flash('حساب شما ایجاد شد! اکنون می‌توانید وارد شوید.', 'success')
         return redirect(url_for('main.login'))
-    return render_template('register.html', title='Register', form=form)
+    return render_template('register.html', title='ثبت نام', form=form)
 
 @main.route("/login", methods=['GET', 'POST'])
 def login():
@@ -39,8 +39,8 @@ def login():
             next_page = request.args.get('next')
             return redirect(next_page) if next_page else redirect(url_for('main.select_category'))
         else:
-            flash('Login Unsuccessful. Please check email and password', 'danger')
-    return render_template('login.html', title='Login', form=form)
+            flash('ورود ناموفق. لطفاً ایمیل و رمز عبور را بررسی کنید.', 'danger')
+    return render_template('login.html', title='ورود', form=form)
 
 @main.route("/logout")
 def logout():
@@ -79,7 +79,7 @@ def question(category):
     ]
     shuffle(answers)
 
-    return render_template('question.html', title='Question', question=question, answers=answers)
+    return render_template('question.html', title='سوال', question=question, answers=answers)
 
 @main.route("/answer", methods=['POST'])
 @login_required
@@ -92,23 +92,23 @@ def answer():
     current_time = time.time()
 
     if start_time and current_time - start_time > 25:
-        flash('Time is up! 6 points were deducted from you.', 'danger')
+        flash('زمان شما به پایان رسید! ۶ امتیاز از شما کسر شد.', 'danger')
         update_score(current_user.id, -6)
     elif selected_answer == question.correct_answer:
         roll = randint(1, 6)
-        flash(f'Correct! You rolled a {roll}.', 'success')
+        flash(f'درست! شما {roll} را انداختید.', 'success')
         update_score(current_user.id, roll)
     else:
-        flash('Incorrect! 6 points were deducted from you.', 'danger')
+        flash('نادرست! ۶ امتیاز از شما کسر شد.', 'danger')
         update_score(current_user.id, -6)
 
     game_data = GameData.query.filter_by(user_id=current_user.id).first()
 
     if game_data.progress == 0 and game_data.stage == 1:
-        flash('Stage 1 complete! Moving to Stage 2.', 'info')
+        flash('مرحله ۱ به پایان رسید! به مرحله ۲ می‌روید.', 'info')
         return redirect(url_for('main.select_category'))
     elif game_data.progress == 0 and game_data.stage == 2:
-        flash('Stage 2 complete! The game is finished.', 'info')
+        flash('مرحله ۲ به پایان رسید! بازی به پایان رسید.', 'info')
         return redirect(url_for('main.final_result'))
 
     return redirect(url_for('main.select_category'))
@@ -140,10 +140,10 @@ def update_score(user_id, roll):
 @login_required
 def result():
     game_data = GameData.query.filter_by(user_id=current_user.id).first()
-    return render_template('result.html', title='Result', game_data=game_data)
+    return render_template('result.html', title='نتیجه', game_data=game_data)
 
 @main.route("/final_result")
 @login_required
 def final_result():
     game_data = GameData.query.filter_by(user_id=current_user.id).first()
-    return render_template('final_result.html', title='Final Result', game_data=game_data)
+    return render_template('final_result.html', title='نتیجه نهایی', game_data=game_data)
