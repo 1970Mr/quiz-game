@@ -1,20 +1,23 @@
 from flask import render_template, url_for, flash, redirect, request, Blueprint, session
 from flask_login import login_user, current_user, logout_user, login_required
 from app import db, bcrypt
-from app.models import User, Question, GameData
+from app.models import User, Question, GameData, AnsweredQuestion
 from app.forms import RegistrationForm, LoginForm
 from random import randint, shuffle
 import time
 
 main = Blueprint('main', __name__)
 
+
 def get_opposite_face(roll):
     return 7 - roll
+
 
 @main.route("/")
 @main.route("/home")
 def home():
     return render_template('home.html')
+
 
 @main.route("/register", methods=['GET', 'POST'])
 def register():
@@ -29,6 +32,7 @@ def register():
         flash('حساب شما ایجاد شد! اکنون می‌توانید وارد شوید.', 'success')
         return redirect(url_for('main.login'))
     return render_template('register.html', title='ثبت نام', form=form)
+
 
 @main.route("/login", methods=['GET', 'POST'])
 def login():
@@ -45,10 +49,12 @@ def login():
             flash('ورود ناموفق. لطفاً ایمیل و رمز عبور را بررسی کنید.', 'danger')
     return render_template('login.html', title='ورود', form=form)
 
+
 @main.route("/logout")
 def logout():
     logout_user()
     return redirect(url_for('main.home'))
+
 
 @main.route('/select_category')
 @login_required
@@ -63,17 +69,27 @@ def select_category():
         game_data.score = 0
         db.session.commit()
 
-    return render_template('select_category.html', stage=game_data.stage, progress=game_data.progress, score=game_data.score)
+    return render_template('select_category.html', stage=game_data.stage, progress=game_data.progress,
+                           score=game_data.score)
+
 
 @main.route("/question/<category>")
 @login_required
 def question(category):
-    question = Question.query.filter_by(category=category).order_by(db.func.random()).first()
+    answered_questions = AnsweredQuestion.query.filter_by(user_id=current_user.id).all()
+    answered_question_ids = [aq.question_id for aq in answered_questions]
+
+    question = Question.query.filter(Question.category == category, Question.id.notin_(answered_question_ids)).order_by(
+        db.func.random()).first()
+
+    if question is None:
+        flash('تمامی سوالات این دسته‌بندی را پاسخ داده‌اید.', 'info')
+        return redirect(url_for('main.select_category'))
+
     session['current_category'] = category
     session['question_id'] = question.id
     session['start_time'] = time.time()
 
-    # Create a list of answers and shuffle them
     answers = [
         (question.correct_answer, True),
         (question.wrong_answer1, False),
@@ -84,27 +100,36 @@ def question(category):
 
     return render_template('question.html', title='سوال', question=question, answers=answers)
 
+
 @main.route("/answer", methods=['POST'])
 @login_required
 def answer():
     question_id = session.get('question_id')
     question = Question.query.get(question_id)
     selected_answer = request.form.get('answer')
-    category = session.get('current_category')
+    current_category = session.get('current_category')
     start_time = session.get('start_time')
     current_time = time.time()
 
     if start_time and current_time - start_time > 25:
         flash('زمان شما به پایان رسید! ۶ امتیاز از شما کسر شد.', 'danger')
         update_score(current_user.id, -6)
+        answered_correctly = False
     elif selected_answer == question.correct_answer:
         roll = randint(1, 6)
         opposite_face = get_opposite_face(roll)
         flash(f'درست! شما {roll} را انداختید. وجه مقابل: {opposite_face}', 'success')
         update_score(current_user.id, roll)
+        answered_correctly = True
     else:
         flash('نادرست! ۶ امتیاز از شما کسر شد.', 'danger')
         update_score(current_user.id, -6)
+        answered_correctly = False
+
+    answered_question = AnsweredQuestion(user_id=current_user.id, question_id=question_id,
+                                         answered_correctly=answered_correctly)
+    db.session.add(answered_question)
+    db.session.commit()
 
     game_data = GameData.query.filter_by(user_id=current_user.id).first()
 
@@ -113,9 +138,11 @@ def answer():
         return redirect(url_for('main.select_category'))
     elif game_data.progress == 0 and game_data.stage == 2:
         flash('مرحله ۲ به پایان رسید! بازی به پایان رسید.', 'info')
+        clear_answered_questions(current_user.id)
         return redirect(url_for('main.final_result'))
 
     return redirect(url_for('main.select_category'))
+
 
 def update_score(user_id, roll):
     game_data = GameData.query.filter_by(user_id=user_id).first()
@@ -124,12 +151,10 @@ def update_score(user_id, roll):
 
     game_data.progress += 1
 
-    # Change score
     if game_data.stage == 2 and roll > 0:
         roll = -roll
     game_data.score += roll
 
-    # Change stage or end game
     if game_data.progress >= 30:
         if game_data.stage == 1:
             game_data.stage = 2
@@ -140,11 +165,18 @@ def update_score(user_id, roll):
 
     db.session.commit()
 
+
+def clear_answered_questions(user_id):
+    AnsweredQuestion.query.filter_by(user_id=user_id).delete()
+    db.session.commit()
+
+
 @main.route("/result")
 @login_required
 def result():
     game_data = GameData.query.filter_by(user_id=current_user.id).first()
     return render_template('result.html', title='نتیجه', game_data=game_data)
+
 
 @main.route("/final_result")
 @login_required
