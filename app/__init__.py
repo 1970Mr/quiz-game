@@ -9,6 +9,8 @@ bcrypt = Bcrypt()
 login_manager = LoginManager()
 login_manager.login_view = 'main.login'
 login_manager.login_message_category = 'info'
+login_manager.login_message = "لطفاً برای دسترسی به این صفحه وارد شوید."
+
 
 def create_app():
     app = Flask(__name__)

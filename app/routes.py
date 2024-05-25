@@ -9,10 +9,6 @@ import time
 main = Blueprint('main', __name__)
 
 
-def get_opposite_face(roll):
-    return 7 - roll
-
-
 @main.route("/")
 @main.route("/home")
 def home():
@@ -69,7 +65,7 @@ def select_category():
         game_data.score = 0
         db.session.commit()
 
-    return render_template('select_category.html', stage=game_data.stage, progress=game_data.progress,
+    return render_template('select_category.html', title='انتخاب دسته‌بندی', stage=game_data.stage, progress=game_data.progress,
                            score=game_data.score)
 
 
@@ -101,6 +97,10 @@ def question(category):
     return render_template('question.html', title='سوال', question=question, answers=answers)
 
 
+def get_opposite_face(roll):
+    return 7 - roll
+
+
 @main.route("/answer", methods=['POST'])
 @login_required
 def answer():
@@ -118,7 +118,7 @@ def answer():
     elif selected_answer == question.correct_answer:
         roll = randint(1, 6)
         opposite_face = get_opposite_face(roll)
-        flash(f'درست! شما {roll} را انداختید. وجه مقابل: {opposite_face}', 'success')
+        flash(f'پاسخ درست بود! شما تاس {roll} را انداختید. وجه مقابل آن {opposite_face} است.', 'success')
         update_score(current_user.id, roll)
         answered_correctly = True
     else:
