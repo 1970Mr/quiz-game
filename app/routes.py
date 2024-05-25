@@ -8,6 +8,9 @@ import time
 
 main = Blueprint('main', __name__)
 
+def get_opposite_face(roll):
+    return 7 - roll
+
 @main.route("/")
 @main.route("/home")
 def home():
@@ -96,7 +99,8 @@ def answer():
         update_score(current_user.id, -6)
     elif selected_answer == question.correct_answer:
         roll = randint(1, 6)
-        flash(f'درست! شما {roll} را انداختید.', 'success')
+        opposite_face = get_opposite_face(roll)
+        flash(f'درست! شما {roll} را انداختید. وجه مقابل: {opposite_face}', 'success')
         update_score(current_user.id, roll)
     else:
         flash('نادرست! ۶ امتیاز از شما کسر شد.', 'danger')
