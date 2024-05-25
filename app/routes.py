@@ -61,11 +61,12 @@ def select_category():
         db.session.add(game_data)
         db.session.commit()
 
-    if game_data.progress == 0 and game_data.stage == 1:
-        game_data.score = 0
-        db.session.commit()
+        if game_data.progress == 0 and game_data.stage == 1 and game_data.score != 0:
+            game_data.score = 0
+            db.session.commit()
 
-    return render_template('select_category.html', title='انتخاب دسته‌بندی', stage=game_data.stage, progress=game_data.progress,
+    return render_template('select_category.html', title='انتخاب دسته‌بندی', stage=game_data.stage,
+                           progress=game_data.progress,
                            score=game_data.score)
 
 
@@ -85,6 +86,7 @@ def question(category):
     session['current_category'] = category
     session['question_id'] = question.id
     session['start_time'] = time.time()
+    session['dice_roll'] = randint(1, 6)
 
     answers = [
         (question.correct_answer, True),
@@ -107,7 +109,7 @@ def answer():
     question_id = session.get('question_id')
     question = Question.query.get(question_id)
     selected_answer = request.form.get('answer')
-    dice_roll = int(request.form.get('dice_roll', 0))
+    dice_roll = session.get('dice_roll')
     start_time = session.get('start_time')
     current_time = time.time()
 
@@ -132,10 +134,16 @@ def answer():
 
     game_data = GameData.query.filter_by(user_id=current_user.id).first()
 
-    if game_data.progress == 0 and game_data.stage == 1:
+    if game_data.progress == 30 and game_data.stage == 1:
+        game_data.progress = 0
+        game_data.stage = 2
+        db.session.commit()
         flash('مرحله ۱ به پایان رسید! به مرحله ۲ می‌روید.', 'info')
         return redirect(url_for('main.select_category'))
-    elif game_data.progress == 0 and game_data.stage == 2:
+    elif game_data.progress == 30 and game_data.stage == 2:
+        game_data.progress = 0
+        game_data.stage = 1
+        db.session.commit()
         flash('مرحله ۲ به پایان رسید! بازی به پایان رسید.', 'info')
         clear_answered_questions(current_user.id)
         return redirect(url_for('main.final_result'))
@@ -153,14 +161,6 @@ def update_score(user_id, roll):
     if game_data.stage == 2 and roll > 0:
         roll = -roll
     game_data.score += roll
-
-    if game_data.progress >= 30:
-        if game_data.stage == 1:
-            game_data.stage = 2
-            game_data.progress = 0
-        elif game_data.stage == 2:
-            game_data.progress = 0
-            game_data.stage = 1
 
     db.session.commit()
 
