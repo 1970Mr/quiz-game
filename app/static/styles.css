@@ -1,0 +1,42 @@
+body {
+    direction: rtl;
+    text-align: right;
+}
+
+a {
+    text-decoration: none;
+}
+
+.dice-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.dice {
+    font-size: 5rem;
+    width: 100px;
+    height: 100px;
+    border: 2px solid #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+}
+
+@keyframes roll {
+    0% {
+        transform: rotate(0deg);
+    }
+    50% {
+        transform: rotate(360deg);
+    }
+    100% {
+        transform: rotate(720deg);
+    }
+}
+
+.rolling {
+    animation: roll 1s ease;
+}

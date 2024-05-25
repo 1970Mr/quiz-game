@@ -107,7 +107,7 @@ def answer():
     question_id = session.get('question_id')
     question = Question.query.get(question_id)
     selected_answer = request.form.get('answer')
-    current_category = session.get('current_category')
+    dice_roll = int(request.form.get('dice_roll', 0))
     start_time = session.get('start_time')
     current_time = time.time()
 
@@ -116,10 +116,9 @@ def answer():
         update_score(current_user.id, -6)
         answered_correctly = False
     elif selected_answer == question.correct_answer:
-        roll = randint(1, 6)
-        opposite_face = get_opposite_face(roll)
-        flash(f'پاسخ درست بود! شما تاس {roll} را انداختید. وجه مقابل آن {opposite_face} است.', 'success')
-        update_score(current_user.id, roll)
+        opposite_face = get_opposite_face(dice_roll)
+        flash(f'پاسخ درست بود! شما تاس {dice_roll} را انداختید. وجه مقابل آن {opposite_face} است.', 'success')
+        update_score(current_user.id, dice_roll)
         answered_correctly = True
     else:
         flash('نادرست! ۶ امتیاز از شما کسر شد.', 'danger')
