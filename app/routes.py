@@ -1,7 +1,7 @@
 from flask import render_template, url_for, flash, redirect, request, Blueprint, session
 from flask_login import login_user, current_user, logout_user, login_required
 from app import db, bcrypt
-from app.models import User, Question, GameData, AnsweredQuestion, Score
+from app.models import User, Question, GameData, AnsweredQuestion
 from app.forms import RegistrationForm, LoginForm, UploadFileForm
 from random import randint, shuffle
 import time
@@ -56,19 +56,14 @@ def select_category():
         flash('هیچ سوالی در پایگاه داده موجود نیست.', 'info')
         return redirect(url_for('main.home'))
 
-    game_data = GameData.query.filter_by(user_id=current_user.id).first()
+    game_data = GameData.query.filter_by(user_id=current_user.id, is_active=True).first()
     if game_data is None:
         game_data = GameData(user_id=current_user.id, stage=1, progress=0, score=0)
         db.session.add(game_data)
         db.session.commit()
 
-    if game_data.progress == 0 and game_data.stage == 1 and game_data.score != 0:
-        game_data.score = 0
-        db.session.commit()
-
     return render_template('select_category.html', title='انتخاب دسته‌بندی', stage=game_data.stage,
-                           progress=game_data.progress,
-                           score=game_data.score)
+                           progress=game_data.progress, score=game_data.score)
 
 @main.route("/question/<category>")
 @login_required
@@ -77,7 +72,8 @@ def question(category):
         flash('هیچ سوالی در این دسته‌بندی موجود نیست.', 'info')
         return redirect(url_for('main.select_category'))
 
-    answered_questions = AnsweredQuestion.query.filter_by(user_id=current_user.id).all()
+    game_data = GameData.query.filter_by(user_id=current_user.id, is_active=True).first()
+    answered_questions = AnsweredQuestion.query.filter_by(user_id=current_user.id, game_data_id=game_data.id).all()
     answered_question_ids = [aq.question_id for aq in answered_questions]
 
     question = Question.query.filter(Question.category == category, Question.id.notin_(answered_question_ids)).order_by(
@@ -129,12 +125,19 @@ def answer():
         update_score(current_user.id, -6)
         answered_correctly = False
 
-    answered_question = AnsweredQuestion(user_id=current_user.id, question_id=question_id,
-                                         answered_correctly=answered_correctly)
+    game_data = GameData.query.filter_by(user_id=current_user.id, is_active=True).first()
+    answered_question = AnsweredQuestion(
+        user_id=current_user.id,
+        question_id=question_id,
+        game_data_id=game_data.id,
+        answered_correctly=answered_correctly,
+        selected_answer=selected_answer,
+        correct_answer=question.correct_answer,
+        dice_roll=dice_roll,
+        question_text=question.question_text
+    )
     db.session.add(answered_question)
     db.session.commit()
-
-    game_data = GameData.query.filter_by(user_id=current_user.id).first()
 
     if game_data.progress == 30 and game_data.stage == 1:
         game_data.progress = 0
@@ -146,17 +149,17 @@ def answer():
         game_data.progress = 0
         game_data.stage = 1
         score = game_data.score
-        save_score(current_user.id, score)
-        game_data.score = 0
+        game_data.is_active = False
+        new_game_data = GameData(user_id=current_user.id, stage=1, progress=0, score=0, is_active=True)
+        db.session.add(new_game_data)
         db.session.commit()
-        flash('مرحله ۲ به پایان رسید! بازی به پایان رسید.', 'info')
-        clear_answered_questions(current_user.id)
+        flash('مرحله ۲ به پایان رسید! بازی به پایان رسید و آزمون جدید ایجاد شد.', 'info')
         return redirect(url_for('main.final_result', score=score))
 
     return redirect(url_for('main.select_category'))
 
 def update_score(user_id, roll):
-    game_data = GameData.query.filter_by(user_id=user_id).first()
+    game_data = GameData.query.filter_by(user_id=user_id, is_active=True).first()
     if game_data.score is None:
         game_data.score = 0
 
@@ -168,37 +171,28 @@ def update_score(user_id, roll):
 
     db.session.commit()
 
-def clear_answered_questions(user_id):
-    AnsweredQuestion.query.filter_by(user_id=user_id).delete()
-    db.session.commit()
-
-def save_score(user_id, score):
-    score_entry = Score(user_id=user_id, score=score)
-    db.session.add(score_entry)
-    db.session.commit()
-
 @main.route("/result")
 @login_required
 def result():
-    game_data = GameData.query.filter_by(user_id=current_user.id).first()
+    game_data = GameData.query.filter_by(user_id=current_user.id, is_active=True).first()
     return render_template('result.html', title='نتیجه', game_data=game_data)
 
 @main.route("/final_result")
 @login_required
 def final_result():
-    game_data = GameData.query.filter_by(user_id=current_user.id).first()
-    score = request.args.get('score', type=int, default=game_data.score)
-    return render_template('final_result.html', title='نتیجه نهایی', game_data=game_data, score=score)
+    score = request.args.get('score', type=int)
+    return render_template('final_result.html', title='نتیجه نهایی', score=score)
 
-@main.route("/admin/scores")
+@main.route("/admin/completed_games")
 @login_required
-def admin_scores():
+def completed_games():
     if not current_user.is_admin:
         flash('شما دسترسی به این صفحه ندارید.', 'danger')
         return redirect(url_for('main.home'))
 
-    scores = Score.query.order_by(Score.timestamp.desc()).all()
-    return render_template('admin_scores.html', title='امتیازها', scores=scores)
+    completed_games = GameData.query.filter_by(is_active=False).order_by(GameData.id.desc()).all()
+    return render_template('completed_games.html', title='بازی‌های تکمیل شده', completed_games=completed_games)
+
 
 @main.route("/admin/upload_questions", methods=['GET', 'POST'])
 @login_required
@@ -230,9 +224,7 @@ def upload_questions():
 def import_questions(json_file, add_only):
     if not add_only:
         # Clear existing questions
-        db.session.query(AnsweredQuestion).delete()
         db.session.query(Question).delete()
-        db.session.query(GameData).delete()
         db.session.commit()
 
     with open(json_file, 'r') as file:

@@ -1,8 +1,7 @@
-<!-- در فایل admin_scores.html -->
 {% extends "base.html" %}
 
 {% block content %}
-<h2>امتیازها</h2>
+<h2>بازی‌های تکمیل شده</h2>
 <table class="table table-striped">
     <thead>
         <tr>
@@ -12,11 +11,11 @@
         </tr>
     </thead>
     <tbody>
-        {% for score in scores %}
+        {% for game in completed_games %}
         <tr>
-            <td>{{ score.user.username }}</td>
-            <td>{{ score.user.email }}</td>
-            <td>{{ score.score }}</td>
+            <td>{{ game.player.username }}</td>
+            <td>{{ game.player.email }}</td>
+            <td>{{ game.score }}</td>
         </tr>
         {% endfor %}
     </tbody>
