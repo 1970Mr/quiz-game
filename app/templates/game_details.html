@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>جزئیات بازی</h2>
+<p>کاربر: {{ game_data.player.username }}</p>
+<p>ایمیل: {{ game_data.player.email }}</p>
+<p>امتیاز: {{ game_data.score }}</p>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>سوال</th>
+            <th>پاسخ داده شده</th>
+            <th>پاسخ صحیح</th>
+            <th>تاس</th>
+            <th>درست/نادرست</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for answered_question in answered_questions %}
+        <tr>
+            <td>{{ answered_question.question_text }}</td>
+            <td>{{ answered_question.selected_answer }}</td>
+            <td>{{ answered_question.correct_answer }}</td>
+            <td>{{ answered_question.dice_roll }}</td>
+            <td>
+                {% if answered_question.answered_correctly %}
+                    درست
+                {% else %}
+                    نادرست
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

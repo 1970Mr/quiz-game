@@ -25,6 +25,14 @@ a {
     border-radius: 10px;
 }
 
+.rolling {
+    animation: roll 1s ease;
+}
+
+td {
+    vertical-align: middle;
+}
+
 @keyframes roll {
     0% {
         transform: rotate(0deg);
@@ -35,8 +43,4 @@ a {
     100% {
         transform: rotate(720deg);
     }
-}
-
-.rolling {
-    animation: roll 1s ease;
 }

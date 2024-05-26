@@ -10,10 +10,12 @@ import json
 
 main = Blueprint('main', __name__)
 
+
 @main.route("/")
 @main.route("/home")
 def home():
     return render_template('home.html')
+
 
 @main.route("/register", methods=['GET', 'POST'])
 def register():
@@ -28,6 +30,7 @@ def register():
         flash('حساب شما ایجاد شد! اکنون می‌توانید وارد شوید.', 'success')
         return redirect(url_for('main.login'))
     return render_template('register.html', title='ثبت نام', form=form)
+
 
 @main.route("/login", methods=['GET', 'POST'])
 def login():
@@ -44,10 +47,12 @@ def login():
             flash('ورود ناموفق. لطفاً ایمیل و رمز عبور را بررسی کنید.', 'danger')
     return render_template('login.html', title='ورود', form=form)
 
+
 @main.route("/logout")
 def logout():
     logout_user()
     return redirect(url_for('main.home'))
+
 
 @main.route('/select_category')
 @login_required
@@ -64,6 +69,7 @@ def select_category():
 
     return render_template('select_category.html', title='انتخاب دسته‌بندی', stage=game_data.stage,
                            progress=game_data.progress, score=game_data.score)
+
 
 @main.route("/question/<category>")
 @login_required
@@ -98,8 +104,10 @@ def question(category):
 
     return render_template('question.html', title='سوال', question=question, answers=answers)
 
+
 def get_opposite_face(roll):
     return 7 - roll
+
 
 @main.route("/answer", methods=['POST'])
 @login_required
@@ -158,6 +166,7 @@ def answer():
 
     return redirect(url_for('main.select_category'))
 
+
 def update_score(user_id, roll):
     game_data = GameData.query.filter_by(user_id=user_id, is_active=True).first()
     if game_data.score is None:
@@ -171,17 +180,20 @@ def update_score(user_id, roll):
 
     db.session.commit()
 
+
 @main.route("/result")
 @login_required
 def result():
     game_data = GameData.query.filter_by(user_id=current_user.id, is_active=True).first()
     return render_template('result.html', title='نتیجه', game_data=game_data)
 
+
 @main.route("/final_result")
 @login_required
 def final_result():
     score = request.args.get('score', type=int)
     return render_template('final_result.html', title='نتیجه نهایی', score=score)
+
 
 @main.route("/admin/completed_games")
 @login_required
@@ -192,6 +204,19 @@ def completed_games():
 
     completed_games = GameData.query.filter_by(is_active=False).order_by(GameData.id.desc()).all()
     return render_template('completed_games.html', title='بازی‌های تکمیل شده', completed_games=completed_games)
+
+
+@main.route("/admin/game_details/<int:game_id>")
+@login_required
+def game_details(game_id):
+    if not current_user.is_admin:
+        flash('شما دسترسی به این صفحه ندارید.', 'danger')
+        return redirect(url_for('main.home'))
+
+    game_data = GameData.query.get_or_404(game_id)
+    answered_questions = AnsweredQuestion.query.filter_by(game_data_id=game_id).all()
+    return render_template('game_details.html', title='جزئیات بازی', game_data=game_data,
+                           answered_questions=answered_questions)
 
 
 @main.route("/admin/upload_questions", methods=['GET', 'POST'])
@@ -220,6 +245,7 @@ def upload_questions():
                 flash(f'خطایی رخ داد: {e}', 'danger')
 
     return render_template('upload_questions.html', title='بارگذاری سوالات', form=form)
+
 
 def import_questions(json_file, add_only):
     if not add_only:
