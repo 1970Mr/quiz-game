@@ -2,12 +2,8 @@ import json
 import os
 import sys
 from sqlalchemy import inspect
-from dotenv import load_dotenv
-from app import create_app, db, bcrypt
-from app.models import User, Question, GameData, AnsweredQuestion
-
-# Load environment variables from .env file
-load_dotenv()
+from app import create_app, db, create_admin
+from app.models import Question, GameData, AnsweredQuestion
 
 app = create_app()
 app.app_context().push()
@@ -41,24 +37,6 @@ def import_questions(json_file, add_only):
 def table_exists(table_name):
     inspector = inspect(db.engine)
     return inspector.has_table(table_name)
-
-
-def create_admin():
-    admin_username = os.getenv('ADMIN_USERNAME')
-    admin_email = os.getenv('ADMIN_EMAIL')
-    admin_password = os.getenv('ADMIN_PASSWORD')
-
-    if admin_username and admin_email and admin_password:
-        # Check if admin user already exists
-        existing_admin = User.query.filter_by(email=admin_email).first()
-        if not existing_admin:
-            hashed_password = bcrypt.generate_password_hash(admin_password).decode('utf-8')
-            admin_user = User(username=admin_username, email=admin_email, password=hashed_password, is_admin=True)
-            db.session.add(admin_user)
-            db.session.commit()
-            print("Admin user created successfully!")
-        else:
-            print("Admin user already exists.")
 
 
 if __name__ == "__main__":
