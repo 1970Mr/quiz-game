@@ -32,27 +32,46 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## Usage
+## Configuration
 
-### Seed Sample Data
+1. Create a `.env` file in the root directory of the project and set the following environment variables:
 
-You can seeding sample data into the database:
-
-```bash
-python seed.py
+```
+FLASK_APP=run.py
+FLASK_ENV=development
+ADMIN_USERNAME=your_admin_username
+ADMIN_EMAIL=your_admin_email
+ADMIN_PASSWORD=your_admin_password
 ```
 
-### Import Questions from JSON
+## Usage
 
-You can also import questions from a JSON file into the database:
+### Seed Initial Data
+
+You can seed initial data into the database, which includes creating the necessary tables and importing questions from a JSON file:
 
 ```bash
-python load_data.py
+python load_data.py path_to_json_file [--add-only]
+```
+
+- `path_to_json_file`: The path to the JSON file containing the questions.
+- `--add-only`: Optional flag to add new questions without resetting the existing ones.
+
+For example:
+
+```bash
+python load_data.py data/questions.json
+```
+
+If you want to add questions to the existing ones without resetting:
+
+```bash
+python load_data.py data/questions.json --add-only
 ```
 
 ## Running the Application
 
-After seeding the sample data or importing questions, you can run the Flask application:
+After seeding the initial data or importing questions, you can run the Flask application:
 
 ```bash
 flask run
