@@ -7,6 +7,10 @@
             {{ form.file.label(class="form-label") }}
             {{ form.file(class="form-control") }}
         </div>
+        <div class="mb-3 form-check d-flex justify-content-start gap-5">
+            {{ form.add_only(class="form-check-input") }}
+            {{ form.add_only.label(class="form-check-label") }}
+        </div>
         <div class="mb-3">
             {{ form.submit(class="btn btn-primary") }}
         </div>

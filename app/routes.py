@@ -218,7 +218,7 @@ def upload_questions():
     if form.validate_on_submit():
         if form.file.data:
             # Define the uploads directory
-            upload_folder = os.path.join('data', 'uploads')
+            upload_folder = os.path.join('uploads', 'data')
             # Check if the directory exists, if not, create it
             if not os.path.exists(upload_folder):
                 os.makedirs(upload_folder)
@@ -227,7 +227,7 @@ def upload_questions():
             filepath = os.path.join(upload_folder, filename)
             form.file.data.save(filepath)
             try:
-                import_questions(filepath)
+                import_questions(filepath, form.add_only.data)
                 flash('سوالات با موفقیت بارگذاری شدند.', 'success')
             except Exception as e:
                 flash(f'خطایی رخ داد: {e}', 'danger')
@@ -235,7 +235,14 @@ def upload_questions():
     return render_template('upload_questions.html', title='بارگذاری سوالات', form=form)
 
 
-def import_questions(json_file):
+def import_questions(json_file, add_only):
+    if not add_only:
+        # Clear existing questions
+        db.session.query(AnsweredQuestion).delete()
+        db.session.query(Question).delete()
+        db.session.query(GameData).delete()
+        db.session.commit()
+
     with open(json_file, 'r') as file:
         questions = json.load(file)
 

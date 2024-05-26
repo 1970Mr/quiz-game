@@ -6,7 +6,7 @@
             <p>{{ question.question_text }}</p>
             <form id="questionForm" method="POST" action="{{ url_for('main.answer') }}">
                 {% for answer, is_correct in answers %}
-                    <div class="form-check d-flex justify-start gap-5">
+                    <div class="form-check d-flex justify-content-start gap-5">
                         <input class="form-check-input" type="radio" name="answer" value="{{ answer }}"
                                id="answer{{ loop.index }}">
                         <label class="form-check-label" for="answer{{ loop.index }}">

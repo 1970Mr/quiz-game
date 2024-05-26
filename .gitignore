@@ -82,6 +82,7 @@ venv/
 
 # data
 images/
+uploads/
 
 # ide
 .idea/

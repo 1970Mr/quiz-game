@@ -33,4 +33,5 @@ class LoginForm(FlaskForm):
 
 class UploadFileForm(FlaskForm):
     file = FileField('انتخاب فایل JSON', validators=[FileAllowed(['json'], 'فقط فایل‌های JSON مجاز هستند!')])
+    add_only = BooleanField('افزودن به سوالات موجود')
     submit = SubmitField('بارگذاری')
