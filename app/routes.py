@@ -2,9 +2,11 @@ from flask import render_template, url_for, flash, redirect, request, Blueprint,
 from flask_login import login_user, current_user, logout_user, login_required
 from app import db, bcrypt
 from app.models import User, Question, GameData, AnsweredQuestion, Score
-from app.forms import RegistrationForm, LoginForm
+from app.forms import RegistrationForm, LoginForm, UploadFileForm
 from random import randint, shuffle
 import time
+import os
+import json
 
 main = Blueprint('main', __name__)
 
@@ -203,3 +205,49 @@ def admin_scores():
 
     scores = Score.query.order_by(Score.timestamp.desc()).all()
     return render_template('admin_scores.html', title='امتیازها', scores=scores)
+
+
+@main.route("/admin/upload_questions", methods=['GET', 'POST'])
+@login_required
+def upload_questions():
+    if not current_user.is_admin:
+        flash('شما دسترسی به این صفحه ندارید.', 'danger')
+        return redirect(url_for('main.home'))
+
+    form = UploadFileForm()
+    if form.validate_on_submit():
+        if form.file.data:
+            # Define the uploads directory
+            upload_folder = os.path.join('data', 'uploads')
+            # Check if the directory exists, if not, create it
+            if not os.path.exists(upload_folder):
+                os.makedirs(upload_folder)
+
+            filename = form.file.data.filename
+            filepath = os.path.join(upload_folder, filename)
+            form.file.data.save(filepath)
+            try:
+                import_questions(filepath)
+                flash('سوالات با موفقیت بارگذاری شدند.', 'success')
+            except Exception as e:
+                flash(f'خطایی رخ داد: {e}', 'danger')
+
+    return render_template('upload_questions.html', title='بارگذاری سوالات', form=form)
+
+
+def import_questions(json_file):
+    with open(json_file, 'r') as file:
+        questions = json.load(file)
+
+    for q in questions:
+        question = Question(
+            category=q['category'],
+            question_text=q['question_text'],
+            correct_answer=q['correct_answer'],
+            wrong_answer1=q['wrong_answer1'],
+            wrong_answer2=q['wrong_answer2'],
+            wrong_answer3=q['wrong_answer3']
+        )
+        db.session.add(question)
+
+    db.session.commit()

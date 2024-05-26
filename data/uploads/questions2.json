@@ -1,0 +1,26 @@
+[
+  {
+    "category": "math",
+    "question_text": "What2 is 2+2?",
+    "correct_answer": "4",
+    "wrong_answer1": "3",
+    "wrong_answer2": "5",
+    "wrong_answer3": "6"
+  },
+  {
+    "category": "math",
+    "question_text": "What2 is the square root of 16?",
+    "correct_answer": "4",
+    "wrong_answer1": "2",
+    "wrong_answer2": "6",
+    "wrong_answer3": "8"
+  },
+  {
+    "category": "math",
+    "question_text": "What2 is 7 * 6?",
+    "correct_answer": "42",
+    "wrong_answer1": "36",
+    "wrong_answer2": "48",
+    "wrong_answer3": "54"
+  }
+]
