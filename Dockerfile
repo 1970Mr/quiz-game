@@ -16,7 +16,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . /app/
 
 # Seed the database
-RUN python load_data.py
+RUN python initial_data.py ./data/questions.json
 
 # Expose the port the app runs on
 EXPOSE 5000

@@ -10,12 +10,10 @@ import json
 
 main = Blueprint('main', __name__)
 
-
 @main.route("/")
 @main.route("/home")
 def home():
     return render_template('home.html')
-
 
 @main.route("/register", methods=['GET', 'POST'])
 def register():
@@ -30,7 +28,6 @@ def register():
         flash('حساب شما ایجاد شد! اکنون می‌توانید وارد شوید.', 'success')
         return redirect(url_for('main.login'))
     return render_template('register.html', title='ثبت نام', form=form)
-
 
 @main.route("/login", methods=['GET', 'POST'])
 def login():
@@ -47,34 +44,39 @@ def login():
             flash('ورود ناموفق. لطفاً ایمیل و رمز عبور را بررسی کنید.', 'danger')
     return render_template('login.html', title='ورود', form=form)
 
-
 @main.route("/logout")
 def logout():
     logout_user()
     return redirect(url_for('main.home'))
 
-
 @main.route('/select_category')
 @login_required
 def select_category():
+    if not Question.query.first():
+        flash('هیچ سوالی در پایگاه داده موجود نیست.', 'info')
+        return redirect(url_for('main.home'))
+
     game_data = GameData.query.filter_by(user_id=current_user.id).first()
     if game_data is None:
         game_data = GameData(user_id=current_user.id, stage=1, progress=0, score=0)
         db.session.add(game_data)
         db.session.commit()
 
-        if game_data.progress == 0 and game_data.stage == 1 and game_data.score != 0:
-            game_data.score = 0
-            db.session.commit()
+    if game_data.progress == 0 and game_data.stage == 1 and game_data.score != 0:
+        game_data.score = 0
+        db.session.commit()
 
     return render_template('select_category.html', title='انتخاب دسته‌بندی', stage=game_data.stage,
                            progress=game_data.progress,
                            score=game_data.score)
 
-
 @main.route("/question/<category>")
 @login_required
 def question(category):
+    if not Question.query.filter_by(category=category).first():
+        flash('هیچ سوالی در این دسته‌بندی موجود نیست.', 'info')
+        return redirect(url_for('main.select_category'))
+
     answered_questions = AnsweredQuestion.query.filter_by(user_id=current_user.id).all()
     answered_question_ids = [aq.question_id for aq in answered_questions]
 
@@ -100,10 +102,8 @@ def question(category):
 
     return render_template('question.html', title='سوال', question=question, answers=answers)
 
-
 def get_opposite_face(roll):
     return 7 - roll
-
 
 @main.route("/answer", methods=['POST'])
 @login_required
@@ -155,7 +155,6 @@ def answer():
 
     return redirect(url_for('main.select_category'))
 
-
 def update_score(user_id, roll):
     game_data = GameData.query.filter_by(user_id=user_id).first()
     if game_data.score is None:
@@ -169,17 +168,14 @@ def update_score(user_id, roll):
 
     db.session.commit()
 
-
 def clear_answered_questions(user_id):
     AnsweredQuestion.query.filter_by(user_id=user_id).delete()
     db.session.commit()
-
 
 def save_score(user_id, score):
     score_entry = Score(user_id=user_id, score=score)
     db.session.add(score_entry)
     db.session.commit()
-
 
 @main.route("/result")
 @login_required
@@ -187,14 +183,12 @@ def result():
     game_data = GameData.query.filter_by(user_id=current_user.id).first()
     return render_template('result.html', title='نتیجه', game_data=game_data)
 
-
 @main.route("/final_result")
 @login_required
 def final_result():
     game_data = GameData.query.filter_by(user_id=current_user.id).first()
     score = request.args.get('score', type=int, default=game_data.score)
     return render_template('final_result.html', title='نتیجه نهایی', game_data=game_data, score=score)
-
 
 @main.route("/admin/scores")
 @login_required
@@ -205,7 +199,6 @@ def admin_scores():
 
     scores = Score.query.order_by(Score.timestamp.desc()).all()
     return render_template('admin_scores.html', title='امتیازها', scores=scores)
-
 
 @main.route("/admin/upload_questions", methods=['GET', 'POST'])
 @login_required
@@ -233,7 +226,6 @@ def upload_questions():
                 flash(f'خطایی رخ داد: {e}', 'danger')
 
     return render_template('upload_questions.html', title='بارگذاری سوالات', form=form)
-
 
 def import_questions(json_file, add_only):
     if not add_only:

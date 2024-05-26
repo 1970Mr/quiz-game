@@ -51,7 +51,7 @@ ADMIN_PASSWORD=your_admin_password
 You can seed initial data into the database, which includes creating the necessary tables and importing questions from a JSON file:
 
 ```bash
-python load_data.py path_to_json_file [--add-only]
+python initial_data.py path_to_json_file [--add-only]
 ```
 
 - `path_to_json_file`: The path to the JSON file containing the questions.
@@ -60,13 +60,13 @@ python load_data.py path_to_json_file [--add-only]
 For example:
 
 ```bash
-python load_data.py data/questions.json
+python initial_data.py data/questions.json
 ```
 
 If you want to add questions to the existing ones without resetting:
 
 ```bash
-python load_data.py data/questions.json --add-only
+python initial_data.py data/questions.json --add-only
 ```
 
 ## Running the Application

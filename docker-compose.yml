@@ -11,5 +11,5 @@ services:
       - FLASK_APP=app
       - FLASK_ENV=development
     command: >
-      sh -c "python load_data.py &&
+      sh -c "python initial_data.py ./data/questions.json &&
              flask run --host=0.0.0.0"
