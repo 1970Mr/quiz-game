@@ -143,12 +143,13 @@ def answer():
     elif game_data.progress == 30 and game_data.stage == 2:
         game_data.progress = 0
         game_data.stage = 1
-        save_score(current_user.id, game_data.score)
+        score = game_data.score
+        save_score(current_user.id, score)
         game_data.score = 0
         db.session.commit()
         flash('مرحله ۲ به پایان رسید! بازی به پایان رسید.', 'info')
         clear_answered_questions(current_user.id)
-        return redirect(url_for('main.final_result'))
+        return redirect(url_for('main.final_result', score=score))
 
     return redirect(url_for('main.select_category'))
 
@@ -189,7 +190,8 @@ def result():
 @login_required
 def final_result():
     game_data = GameData.query.filter_by(user_id=current_user.id).first()
-    return render_template('final_result.html', title='نتیجه نهایی', game_data=game_data)
+    score = request.args.get('score', type=int, default=game_data.score)
+    return render_template('final_result.html', title='نتیجه نهایی', game_data=game_data, score=score)
 
 
 @main.route("/admin/scores")

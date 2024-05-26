@@ -3,7 +3,7 @@
 {% block content %}
 <div class="container mt-4">
     <h2>نتیجه نهایی</h2>
-    <p>امتیاز نهایی شما: {{ game_data.score }}</p>
+    <p>امتیاز نهایی شما: {{ score }}</p>
     <a href="{{ url_for('main.select_category') }}" class="btn btn-primary">دوباره بازی کن</a>
 </div>
 {% endblock %}
