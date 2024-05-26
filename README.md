@@ -34,11 +34,8 @@ pip install -r requirements.txt
 
 ## Configuration
 
-1. Create a `.env` file in the root directory of the project and set the following environment variables:
-
+Create a .env file in the root directory of the project and set the following environment variables. You can use the provided .env.example file as a template:
 ```
-FLASK_APP=run.py
-FLASK_ENV=development
 ADMIN_USERNAME=your_admin_username
 ADMIN_EMAIL=your_admin_email
 ADMIN_PASSWORD=your_admin_password
