@@ -1,16 +1,21 @@
-from app import db
 from datetime import datetime
+from app import db
 from flask_login import UserMixin
 
+
+from datetime import datetime
+from app import db
+from flask_login import UserMixin
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
-    # Add relationship to AnsweredQuestion
+    is_admin = db.Column(db.Boolean, nullable=False, default=False)
     game_data = db.relationship('GameData', backref='player', lazy=True)
     answered_questions = db.relationship('AnsweredQuestion', backref='user', lazy=True)
+    scores = db.relationship('Score', backref='user', lazy=True)
 
 
 class Question(db.Model):
@@ -36,4 +41,11 @@ class AnsweredQuestion(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     question_id = db.Column(db.Integer, db.ForeignKey('question.id'), nullable=False)
     answered_correctly = db.Column(db.Boolean, nullable=False, default=False)
+    timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+
+class Score(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    score = db.Column(db.Integer, nullable=False)
     timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)

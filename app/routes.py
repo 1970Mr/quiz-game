@@ -1,7 +1,7 @@
 from flask import render_template, url_for, flash, redirect, request, Blueprint, session
 from flask_login import login_user, current_user, logout_user, login_required
 from app import db, bcrypt
-from app.models import User, Question, GameData, AnsweredQuestion
+from app.models import User, Question, GameData, AnsweredQuestion, Score
 from app.forms import RegistrationForm, LoginForm
 from random import randint, shuffle
 import time
@@ -143,6 +143,8 @@ def answer():
     elif game_data.progress == 30 and game_data.stage == 2:
         game_data.progress = 0
         game_data.stage = 1
+        save_score(current_user.id, game_data.score)
+        game_data.score = 0
         db.session.commit()
         flash('مرحله ۲ به پایان رسید! بازی به پایان رسید.', 'info')
         clear_answered_questions(current_user.id)
@@ -170,6 +172,12 @@ def clear_answered_questions(user_id):
     db.session.commit()
 
 
+def save_score(user_id, score):
+    score_entry = Score(user_id=user_id, score=score)
+    db.session.add(score_entry)
+    db.session.commit()
+
+
 @main.route("/result")
 @login_required
 def result():
@@ -182,3 +190,14 @@ def result():
 def final_result():
     game_data = GameData.query.filter_by(user_id=current_user.id).first()
     return render_template('final_result.html', title='نتیجه نهایی', game_data=game_data)
+
+
+@main.route("/admin/scores")
+@login_required
+def admin_scores():
+    if not current_user.is_admin:
+        flash('شما دسترسی به این صفحه ندارید.', 'danger')
+        return redirect(url_for('main.home'))
+
+    scores = Score.query.order_by(Score.timestamp.desc()).all()
+    return render_template('admin_scores.html', title='امتیازها', scores=scores)
