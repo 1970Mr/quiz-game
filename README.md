@@ -7,7 +7,7 @@ Welcome to Quiz Game! This is a simple Flask web application where users can pla
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/github-1970/quiz-game.git
+git clone https://github.com/1970Mr/quiz-game.git
 cd quiz-game
 ```
 
