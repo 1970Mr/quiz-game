@@ -31,21 +31,21 @@ def register():
         db.session.add(user)
         db.session.commit()
         flash('حساب شما ایجاد شد! اکنون می‌توانید وارد شوید.', 'success')
-        return redirect(url_for('main.login'))
+        return redirect(url_for('user.login'))
     return render_template('register.html', title='ثبت نام', form=form)
 
 
 @main.route("/login", methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('main.home'))
+        return redirect(url_for('user.home'))
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data.lower()).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember.data)
             next_page = request.args.get('next')
-            return redirect(next_page) if next_page else redirect(url_for('main.select_category'))
+            return redirect(next_page) if next_page else redirect(url_for('game.select_category'))
         else:
             flash('ورود ناموفق. لطفاً ایمیل و رمز عبور را بررسی کنید.', 'danger')
     return render_template('login.html', title='ورود', form=form)
@@ -79,7 +79,7 @@ def select_category():
 def question(category):
     if not Question.query.filter_by(category=category).first():
         flash('هیچ سوالی در این دسته‌بندی موجود نیست.', 'info')
-        return redirect(url_for('main.select_category'))
+        return redirect(url_for('game.select_category'))
 
     game_data = GameData.query.filter_by(user_id=current_user.id, is_active=True).first()
     answered_questions = AnsweredQuestion.query.filter_by(user_id=current_user.id, game_data_id=game_data.id).all()
@@ -90,7 +90,7 @@ def question(category):
 
     if question is None:
         flash('تمامی سوالات این دسته‌بندی را پاسخ داده‌اید.', 'info')
-        return redirect(url_for('main.select_category'))
+        return redirect(url_for('game.select_category'))
 
     session['current_category'] = category
     session['question_id'] = question.id
@@ -155,7 +155,7 @@ def answer():
         game_data.stage = 2
         db.session.commit()
         flash('مرحله ۱ به پایان رسید! به مرحله ۲ می‌روید.', 'info')
-        return redirect(url_for('main.select_category'))
+        return redirect(url_for('game.select_category'))
     elif game_data.progress == 25 and game_data.stage == 2:
         game_data.progress = 0
         game_data.stage = 1
@@ -165,9 +165,9 @@ def answer():
         db.session.add(new_game_data)
         db.session.commit()
         flash('مرحله ۲ به پایان رسید! بازی به پایان رسید و آزمون جدید ایجاد شد.', 'info')
-        return redirect(url_for('main.final_result', score=score))
+        return redirect(url_for('game.final_result', score=score))
 
-    return redirect(url_for('main.select_category'))
+    return redirect(url_for('game.select_category'))
 
 
 def update_score(user_id, roll):
@@ -272,6 +272,7 @@ def import_questions(json_file, add_only):
 
     db.session.commit()
 
+
 @main.route("/admin/export_completed_games")
 @login_required
 def export_completed_games():
@@ -296,6 +297,7 @@ def export_completed_games():
     output.seek(0)
 
     return send_file(output, download_name='completed_games.xlsx', as_attachment=True)
+
 
 @main.route("/admin/export_game_details/<int:game_id>")
 @login_required

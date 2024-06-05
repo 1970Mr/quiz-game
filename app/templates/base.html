@@ -18,27 +18,25 @@
         <ul class="navbar-nav ms-auto">
             {% if current_user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('main.result') }}">نتیجه فعلی</a>
+                    <a class="nav-link" href="{{ url_for('game.result') }}">نتیجه فعلی</a>
                 </li>
                 {% if current_user.is_admin %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('main.completed_games') }}">جزئیات بازی‌های تمام شده</a>
+                        <a class="nav-link" href="{{ url_for('admin.completed_games') }}">جزئیات بازی‌های تمام شده</a>
                     </li>
-                {% endif %}
-                {% if current_user.is_admin %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('main.upload_questions') }}">بارگذاری سوالات</a>
+                        <a class="nav-link" href="{{ url_for('admin.upload_questions') }}">بارگذاری سوالات</a>
                     </li>
                 {% endif %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('main.logout') }}">خروج</a>
+                    <a class="nav-link" href="{{ url_for('user.logout') }}">خروج</a>
                 </li>
             {% else %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('main.login') }}">ورود</a>
+                    <a class="nav-link" href="{{ url_for('user.login') }}">ورود</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('main.register') }}">ثبت نام</a>
+                    <a class="nav-link" href="{{ url_for('user.register') }}">ثبت نام</a>
                 </li>
             {% endif %}
         </ul>

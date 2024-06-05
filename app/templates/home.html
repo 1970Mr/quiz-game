@@ -4,9 +4,9 @@
     <h1 class="display-4">به بازی سوالات خوش آمدید</h1>
     {% if current_user.is_authenticated %}
     <p class="lead">برای شروع، دسته‌بندی را انتخاب کنید:</p>
-    <a class="btn btn-primary btn-lg" href="{{ url_for('main.select_category') }}" role="button">انتخاب دسته‌بندی</a>
+    <a class="btn btn-primary btn-lg" href="{{ url_for('game.select_category') }}" role="button">انتخاب دسته‌بندی</a>
     {% else %}
-    <p class="lead">لطفاً <a href="{{ url_for('main.login') }}">وارد شوید</a> یا <a href="{{ url_for('main.register') }}">ثبت نام کنید</a> تا بازی را شروع کنید.</p>
+    <p class="lead">لطفاً <a href="{{ url_for('user.login') }}">وارد شوید</a> یا <a href="{{ url_for('user.register') }}">ثبت نام کنید</a> تا بازی را شروع کنید.</p>
     {% endif %}
 </div>
 {% endblock %}
