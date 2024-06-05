@@ -1,28 +1,30 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>بازی‌های تکمیل شده</h2>
-<a href="{{ url_for('main.export_completed_games') }}" class="btn btn-success mb-4">دانلود خروجی اکسل</a>
-<table class="table table-striped mt-4">
-    <thead>
-        <tr>
-            <th>نام کاربری</th>
-            <th>ایمیل</th>
-            <th>امتیاز</th>
-            <th>عملیات</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for game in completed_games %}
-        <tr>
-            <td>{{ game.player.username }}</td>
-            <td>{{ game.player.email }}</td>
-            <td>{{ game.score }}</td>
-            <td>
-                <a href="{{ url_for('main.game_details', game_id=game.id) }}" class="btn btn-primary">جزئیات</a>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+    <h2>بازی‌های تکمیل شده</h2>
+    <a href="{{ url_for('main.export_completed_games') }}" class="btn btn-success mb-4">دانلود خروجی اکسل</a>
+    <div class="table-responsive">
+        <table class="table table-striped mt-4">
+            <thead>
+            <tr>
+                <th>نام کاربری</th>
+                <th>ایمیل</th>
+                <th>امتیاز</th>
+                <th>عملیات</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for game in completed_games %}
+                <tr>
+                    <td>{{ game.player.username }}</td>
+                    <td>{{ game.player.email }}</td>
+                    <td>{{ game.score }}</td>
+                    <td>
+                        <a href="{{ url_for('main.game_details', game_id=game.id) }}" class="btn btn-primary">جزئیات</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}
