@@ -11,6 +11,7 @@ from io import BytesIO
 
 admin = Blueprint('admin', __name__)
 
+
 @admin.route("/admin/completed_games")
 @login_required
 def completed_games():
@@ -20,6 +21,7 @@ def completed_games():
 
     completed_games = GameData.query.filter_by(is_active=False).order_by(GameData.id.desc()).all()
     return render_template('completed_games.html', title='بازی‌های تکمیل شده', completed_games=completed_games)
+
 
 @admin.route("/admin/game_details/<int:game_id>")
 @login_required
@@ -32,6 +34,7 @@ def game_details(game_id):
     answered_questions = AnsweredQuestion.query.filter_by(game_data_id=game_id).all()
     return render_template('game_details.html', title='جزئیات بازی', game_data=game_data,
                            answered_questions=answered_questions)
+
 
 @admin.route("/admin/upload_questions", methods=['GET', 'POST'])
 @login_required
@@ -60,6 +63,7 @@ def upload_questions():
 
     return render_template('upload_questions.html', title='بارگذاری سوالات', form=form)
 
+
 def import_questions(json_file, add_only):
     if not add_only:
         # Clear existing questions
@@ -81,6 +85,7 @@ def import_questions(json_file, add_only):
         db.session.add(question)
 
     db.session.commit()
+
 
 @admin.route("/admin/export_completed_games")
 @login_required
@@ -106,6 +111,7 @@ def export_completed_games():
     output.seek(0)
 
     return send_file(output, download_name='completed_games.xlsx', as_attachment=True)
+
 
 @admin.route("/admin/export_game_details/<int:game_id>")
 @login_required

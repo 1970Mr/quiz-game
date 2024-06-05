@@ -6,6 +6,7 @@ from app.forms import RegistrationForm, LoginForm
 
 user = Blueprint('user', __name__)
 
+
 @user.route("/register", methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
@@ -19,6 +20,7 @@ def register():
         flash('حساب شما ایجاد شد! اکنون می‌توانید وارد شوید.', 'success')
         return redirect(url_for('user.login'))
     return render_template('register.html', title='ثبت نام', form=form)
+
 
 @user.route("/login", methods=['GET', 'POST'])
 def login():
@@ -34,6 +36,7 @@ def login():
         else:
             flash('ورود ناموفق. لطفاً ایمیل و رمز عبور را بررسی کنید.', 'danger')
     return render_template('login.html', title='ورود', form=form)
+
 
 @user.route("/logout")
 def logout():

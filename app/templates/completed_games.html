@@ -20,7 +20,8 @@
                     <td>{{ game.player.email }}</td>
                     <td>{{ game.score }}</td>
                     <td>
-                        <a href="{{ url_for('admin.game_details', game_id=game.id) }}" class="btn btn-primary">جزئیات</a>
+                        <a href="{{ url_for('admin.game_details', game_id=game.id) }}"
+                           class="btn btn-primary">جزئیات</a>
                     </td>
                 </tr>
             {% endfor %}

@@ -4,8 +4,17 @@ from app import db
 from app.models import Question, GameData, AnsweredQuestion
 import time
 from random import randint, shuffle
+from dotenv import load_dotenv
+import os
+
+# Load environment variables from .env file
+load_dotenv()
 
 game = Blueprint('game', __name__)
+
+# Fixed number of questions
+NUM_QUESTIONS_PER_STAGE = int(os.getenv('NUM_QUESTIONS_PER_STAGE', '25'))
+
 
 # Helper function to get or create active game data
 def get_or_create_active_game_data(user_id):
@@ -16,10 +25,12 @@ def get_or_create_active_game_data(user_id):
         db.session.commit()
     return game_data
 
+
 # Helper function to get unanswered question
 def get_unanswered_question(category, answered_question_ids):
     return Question.query.filter(Question.category == category, Question.id.notin_(answered_question_ids)) \
         .order_by(db.func.random()).first()
+
 
 # Helper function to update the score
 def update_score(user_id, roll):
@@ -35,9 +46,11 @@ def update_score(user_id, roll):
 
     db.session.commit()
 
+
 # Helper function to get opposite face of dice
 def get_opposite_face(roll):
     return 7 - roll
+
 
 # Route to select a category
 @game.route('/select_category')
@@ -50,7 +63,8 @@ def select_category():
     game_data = get_or_create_active_game_data(current_user.id)
 
     return render_template('select_category.html', title='انتخاب دسته‌بندی', stage=game_data.stage,
-                           progress=game_data.progress, score=game_data.score)
+                           progress=game_data.progress, score=game_data.score, num_questions=NUM_QUESTIONS_PER_STAGE)
+
 
 # Route to get a question from selected category
 @game.route("/question/<category>")
@@ -84,6 +98,7 @@ def question(category):
     shuffle(answers)
 
     return render_template('question.html', title='سوال', question=question, answers=answers)
+
 
 # Route to handle the answer submission
 @game.route("/answer", methods=['POST'])
@@ -125,7 +140,7 @@ def answer():
     db.session.commit()
 
     # Handle stage progression
-    if game_data.progress == 25:
+    if game_data.progress == NUM_QUESTIONS_PER_STAGE:
         if game_data.stage == 1:
             game_data.stage = 2
         else:
@@ -140,12 +155,14 @@ def answer():
 
     return redirect(url_for('game.select_category'))
 
+
 # Route to show current game result
 @game.route("/result")
 @login_required
 def result():
     game_data = GameData.query.filter_by(user_id=current_user.id, is_active=True).first()
-    return render_template('result.html', title='نتیجه', game_data=game_data)
+    return render_template('result.html', title='نتیجه', game_data=game_data, num_questions=NUM_QUESTIONS_PER_STAGE)
+
 
 # Route to show final result after game ends
 @game.route("/final_result")

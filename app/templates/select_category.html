@@ -1,29 +1,35 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="container mt-4">
-    <h2>انتخاب دسته‌بندی</h2>
-    <div class="list-group mt-4">
-        <a href="{{ url_for('game.question', category='general') }}" class="list-group-item list-group-item-action">دانش عمومی</a>
-        <a href="{{ url_for('game.question', category='math') }}" class="list-group-item list-group-item-action">ریاضیات</a>
-    </div>
+    <div class="container mt-4">
+        <h2>انتخاب دسته‌بندی</h2>
+        <div class="list-group mt-4">
+            <a href="{{ url_for('game.question', category='general') }}" class="list-group-item list-group-item-action">دانش
+                عمومی</a>
+            <a href="{{ url_for('game.question', category='math') }}" class="list-group-item list-group-item-action">ریاضیات</a>
+        </div>
 
-    <div class="my-5">
-        {% if stage == 1 %}
-        <h5>مرحله ۱: {{ score }} امتیاز</h5>
-        {% elif stage == 2 %}
-        <h5>مرحله ۲: {{ score }} امتیاز</h5>
-        {% endif %}
-        <div class="progress my-3" style="height: 2rem">
+        <div class="my-5">
             {% if stage == 1 %}
-            <div class="progress-bar bg-success" role="progressbar" style="width: {{ progress * 100 / 25 }}%; height: 2rem;" aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="25">
-                {{ progress }} / 25
-            </div>
+                <h5>مرحله ۱: {{ score }} امتیاز</h5>
             {% elif stage == 2 %}
-            <div class="progress-bar bg-danger" role="progressbar" style="width: {{ (25 - progress) * 100 / 25 }}%; height: 2rem;" aria-valuenow="{{ 25 - progress }}" aria-valuemin="0" aria-valuemax="25">
-                {{ 25 - progress }} / 25
-            </div>
+                <h5>مرحله ۲: {{ score }} امتیاز</h5>
             {% endif %}
+            <div class="progress my-3" style="height: 2rem">
+                {% if stage == 1 %}
+                    <div class="progress-bar bg-success" role="progressbar"
+                         style="width: {{ progress * 100 / num_questions }}%; height: 2rem;"
+                         aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="{{ num_questions }}">
+                        {{ progress }} / {{ num_questions }}
+                    </div>
+                {% elif stage == 2 %}
+                    <div class="progress-bar bg-danger" role="progressbar"
+                         style="width: {{ (num_questions - progress) * 100 / num_questions }}%; height: 2rem;"
+                         aria-valuenow="{{ num_questions - progress }}" aria-valuemin="0"
+                         aria-valuemax="{{ num_questions }}">
+                        {{ num_questions - progress }} / {{ num_questions }}
+                    </div>
+                {% endif %}
+            </div>
         </div>
     </div>
-</div>
 {% endblock %}

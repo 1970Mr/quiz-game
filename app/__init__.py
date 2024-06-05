@@ -17,6 +17,7 @@ login_manager.login_view = 'user.login'
 login_manager.login_message_category = 'info'
 login_manager.login_message = "لطفاً برای دسترسی به این صفحه وارد شوید."
 
+
 def create_admin():
     from app.models import User
     admin_username = os.getenv('ADMIN_USERNAME')
@@ -34,6 +35,7 @@ def create_admin():
             print("Admin user created successfully!")
         else:
             print("Admin user already exists.")
+
 
 def create_app():
     app = Flask(__name__)
