@@ -7,6 +7,9 @@ from random import randint, shuffle
 import time
 import os
 import json
+import pandas as pd
+from flask import send_file
+from io import BytesIO
 
 main = Blueprint('main', __name__)
 
@@ -147,13 +150,13 @@ def answer():
     db.session.add(answered_question)
     db.session.commit()
 
-    if game_data.progress == 30 and game_data.stage == 1:
+    if game_data.progress == 25 and game_data.stage == 1:
         game_data.progress = 0
         game_data.stage = 2
         db.session.commit()
         flash('مرحله ۱ به پایان رسید! به مرحله ۲ می‌روید.', 'info')
         return redirect(url_for('main.select_category'))
-    elif game_data.progress == 30 and game_data.stage == 2:
+    elif game_data.progress == 25 and game_data.stage == 2:
         game_data.progress = 0
         game_data.stage = 1
         score = game_data.score
@@ -268,3 +271,56 @@ def import_questions(json_file, add_only):
         db.session.add(question)
 
     db.session.commit()
+
+@main.route("/admin/export_completed_games")
+@login_required
+def export_completed_games():
+    if not current_user.is_admin:
+        flash('شما دسترسی به این صفحه ندارید.', 'danger')
+        return redirect(url_for('main.home'))
+
+    completed_games = GameData.query.filter_by(is_active=False).order_by(GameData.id.desc()).all()
+    data = []
+    for game in completed_games:
+        data.append({
+            'نام کاربری': game.player.username,
+            'ایمیل': game.player.email,
+            'امتیاز': game.score
+        })
+
+    df = pd.DataFrame(data)
+    output = BytesIO()
+    writer = pd.ExcelWriter(output, engine='xlsxwriter')
+    df.to_excel(writer, index=False, sheet_name='Completed Games')
+    writer.close()
+    output.seek(0)
+
+    return send_file(output, download_name='completed_games.xlsx', as_attachment=True)
+
+@main.route("/admin/export_game_details/<int:game_id>")
+@login_required
+def export_game_details(game_id):
+    if not current_user.is_admin:
+        flash('شما دسترسی به این صفحه ندارید.', 'danger')
+        return redirect(url_for('main.home'))
+
+    GameData.query.get_or_404(game_id)
+    answered_questions = AnsweredQuestion.query.filter_by(game_data_id=game_id).all()
+    data = []
+    for aq in answered_questions:
+        data.append({
+            'سوال': aq.question_text,
+            'پاسخ داده شده': aq.selected_answer,
+            'پاسخ صحیح': aq.correct_answer,
+            'تاس': aq.dice_roll,
+            'درست/نادرست': 'درست' if aq.answered_correctly else 'نادرست'
+        })
+
+    df = pd.DataFrame(data)
+    output = BytesIO()
+    writer = pd.ExcelWriter(output, engine='xlsxwriter')
+    df.to_excel(writer, index=False, sheet_name='Game Details')
+    writer.close()
+    output.seek(0)
+
+    return send_file(output, download_name=f'game_{game_id}_details.xlsx', as_attachment=True)

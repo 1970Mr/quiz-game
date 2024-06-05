@@ -2,6 +2,7 @@
 
 {% block content %}
 <h2>جزئیات بازی</h2>
+<a href="{{ url_for('main.export_game_details', game_id=game_data.id) }}" class="btn btn-success mb-4">دانلود خروجی اکسل</a>
 <p>کاربر: {{ game_data.player.username }}</p>
 <p>ایمیل: {{ game_data.player.email }}</p>
 <p>امتیاز: {{ game_data.score }}</p>

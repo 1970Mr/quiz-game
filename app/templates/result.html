@@ -5,7 +5,7 @@
         <h2 class="card-title">نتیجه بازی</h2>
         <p>مرحله: {{ game_data.stage }}</p>
         <p>امتیاز: {{ game_data.score }}</p>
-        <p>پیشرفت: {{ game_data.progress }}/30</p>
+        <p>پیشرفت: {{ game_data.progress }}/25</p>
         {% if game_data.stage == 1 %}
         <p>ادامه دهید تا مرحله اول را کامل کنید!</p>
         {% elif game_data.stage == 2 %}

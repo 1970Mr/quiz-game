@@ -15,12 +15,12 @@
         {% endif %}
         <div class="progress my-3" style="height: 2rem">
             {% if stage == 1 %}
-            <div class="progress-bar bg-success" role="progressbar" style="width: {{ progress * 100 / 30 }}%; height: 2rem;" aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="30">
-                {{ progress }} / 30
+            <div class="progress-bar bg-success" role="progressbar" style="width: {{ progress * 100 / 25 }}%; height: 2rem;" aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="25">
+                {{ progress }} / 25
             </div>
             {% elif stage == 2 %}
-            <div class="progress-bar bg-danger" role="progressbar" style="width: {{ (30 - progress) * 100 / 30 }}%; height: 2rem;" aria-valuenow="{{ 30 - progress }}" aria-valuemin="0" aria-valuemax="30">
-                {{ 30 - progress }} / 30
+            <div class="progress-bar bg-danger" role="progressbar" style="width: {{ (25 - progress) * 100 / 25 }}%; height: 2rem;" aria-valuenow="{{ 25 - progress }}" aria-valuemin="0" aria-valuemax="25">
+                {{ 25 - progress }} / 25
             </div>
             {% endif %}
         </div>
