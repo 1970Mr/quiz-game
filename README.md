@@ -39,6 +39,7 @@ Create a .env file in the root directory of the project and set the following en
 ADMIN_USERNAME=your_admin_username
 ADMIN_EMAIL=your_admin_email
 ADMIN_PASSWORD=your_admin_password
+NUM_QUESTIONS_PER_STAGE=your_number_questions_per_stage
 ```
 
 ## Usage

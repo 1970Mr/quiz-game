@@ -4,7 +4,7 @@
         <div class="card-body">
             <h2 class="card-title">نتیجه بازی</h2>
             <p>مرحله: {{ game_data.stage }}</p>
-            <p>امتیاز: {{ game_data.score }}</p>
+{#            <p>امتیاز: {{ game_data.score }}</p>#}
             <p>پیشرفت: {{ game_data.progress }} / {{ num_questions }}</p>
             {% if game_data.stage == 1 %}
                 <p>ادامه دهید تا مرحله اول را کامل کنید!</p>

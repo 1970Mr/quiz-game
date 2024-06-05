@@ -12,6 +12,9 @@ load_dotenv()
 
 game = Blueprint('game', __name__)
 
+# Constants for categories
+CATEGORIES = ["general", "math"]
+
 # Fixed number of questions
 NUM_QUESTIONS_PER_STAGE = int(os.getenv('NUM_QUESTIONS_PER_STAGE', '25'))
 
@@ -32,19 +35,39 @@ def get_unanswered_question(category, answered_question_ids):
         .order_by(db.func.random()).first()
 
 
-# Helper function to update the score
-def update_score(user_id, roll):
+# Helper function to set score
+def set_score(game_data, category, role, opposite_face):
+    if category == CATEGORIES[0]:
+        game_data.score += role
+        db.session.commit()
+        return role
+    elif category == CATEGORIES[1]:
+        game_data.score += opposite_face
+        db.session.commit()
+        return opposite_face
+
+
+# Helper function to update the score based on the category and stage
+def update_score(user_id, roll, stage, category):
     game_data = GameData.query.filter_by(user_id=user_id, is_active=True).first()
     if game_data.score is None:
         game_data.score = 0
 
-    game_data.progress += 1
+    registered_score = 0
+    opposite_face = get_opposite_face(abs(roll))
 
-    if game_data.stage == 2 and roll > 0:
-        roll = -roll
-    game_data.score += roll
+    # In stage 2, adjust the score based on the roll value
+    if stage == 2:
+        if roll > 0:
+            roll = -roll
+        opposite_face = -opposite_face
+        registered_score = set_score(game_data, category, roll, opposite_face)
+    # In stage 1, adjust the score based on the category
+    elif stage == 1 and roll > 0:
+        registered_score = set_score(game_data, category, roll, opposite_face)
 
     db.session.commit()
+    return registered_score
 
 
 # Helper function to get opposite face of dice
@@ -111,47 +134,63 @@ def answer():
     start_time = session.get('start_time')
     current_time = time.time()
 
-    if start_time and current_time - start_time > 25:
-        flash('زمان شما به پایان رسید! ۶ امتیاز از شما کسر شد.', 'danger')
-        update_score(current_user.id, -6)
-        answered_correctly = False
-    elif selected_answer == question.correct_answer:
+    game_data = GameData.query.filter_by(user_id=current_user.id, is_active=True).first()
+    category = session.get('current_category')
+
+    # Check if correct answer
+    if selected_answer == question.correct_answer:
         opposite_face = get_opposite_face(dice_roll)
         flash(f'پاسخ درست بود! شما تاس {dice_roll} را انداختید. وجه مقابل آن {opposite_face} است.', 'success')
-        update_score(current_user.id, dice_roll)
+        answer_score = update_score(current_user.id, dice_roll, game_data.stage, category)
         answered_correctly = True
-    else:
-        flash('نادرست! ۶ امتیاز از شما کسر شد.', 'danger')
-        update_score(current_user.id, -6)
+    # Check if time exceeded
+    elif start_time and current_time - start_time > 25:
+        flash('زمان شما به پایان رسید!', 'danger')
+        answer_score = update_score(current_user.id, -6, game_data.stage, category)
         answered_correctly = False
+        selected_answer = selected_answer or 'زمان به اتمام رسید!'
+    # Incorrect answer
+    else:
+        flash('نادرست!', 'danger')
+        answer_score = update_score(current_user.id, -6, game_data.stage, category)
+        answered_correctly = False
+        selected_answer = selected_answer or 'خالی ارسال شد!'
 
-    game_data = GameData.query.filter_by(user_id=current_user.id, is_active=True).first()
     answered_question = AnsweredQuestion(
         user_id=current_user.id,
-        question_id=question_id,
         game_data_id=game_data.id,
-        answered_correctly=answered_correctly,
+        question_id=question_id,
+        question_text=question.question_text,
         selected_answer=selected_answer,
         correct_answer=question.correct_answer,
+        answered_correctly=answered_correctly,
         dice_roll=dice_roll,
-        question_text=question.question_text
+        answer_score=answer_score
     )
     db.session.add(answered_question)
+    db.session.commit()
+
+    # Always update progress
+    game_data.progress += 1
     db.session.commit()
 
     # Handle stage progression
     if game_data.progress == NUM_QUESTIONS_PER_STAGE:
         if game_data.stage == 1:
             game_data.stage = 2
+            game_data.progress = 0
+            db.session.commit()
+            flash('مرحله به پایان رسید! به مرحله بعد می‌روید.', 'info')
+            return redirect(url_for('game.select_category'))
         else:
             game_data.stage = 1
             game_data.is_active = False
             new_game_data = GameData(user_id=current_user.id, stage=1, progress=0, score=0, is_active=True)
             db.session.add(new_game_data)
-        game_data.progress = 0
-        db.session.commit()
-        flash('مرحله به پایان رسید! به مرحله بعد می‌روید.', 'info')
-        return redirect(url_for('game.select_category'))
+            game_data.progress = 0
+            db.session.commit()
+            flash('بازی به پایان رسید!', 'info')
+            return redirect(url_for('game.final_result', score=game_data.score))
 
     return redirect(url_for('game.select_category'))
 

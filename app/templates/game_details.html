@@ -15,6 +15,7 @@
                 <th>پاسخ داده شده</th>
                 <th>پاسخ صحیح</th>
                 <th>تاس</th>
+                <th>امتیاز ثبت شده</th>
                 <th>درست/نادرست</th>
             </tr>
             </thead>
@@ -25,6 +26,7 @@
                     <td>{{ answered_question.selected_answer }}</td>
                     <td>{{ answered_question.correct_answer }}</td>
                     <td>{{ answered_question.dice_roll }}</td>
+                    <td>{{ answered_question.answer_score }}</td>
                     <td>
                         {% if answered_question.answered_correctly %}
                             درست
