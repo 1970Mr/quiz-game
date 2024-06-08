@@ -16,6 +16,7 @@ game = Blueprint('game', __name__)
 CATEGORIES = ["general", "math"]
 NUM_QUESTIONS_PER_STAGE = int(os.getenv('NUM_QUESTIONS_PER_STAGE', '25'))
 
+
 # Helper function to get or create active game data
 def get_or_create_active_game_data(user_id):
     game_data = GameData.query.filter_by(user_id=user_id, is_active=True).first()
@@ -25,6 +26,7 @@ def get_or_create_active_game_data(user_id):
         db.session.commit()
     return game_data
 
+
 # Helper function to get an unanswered question
 def get_unanswered_question(category, answered_question_ids):
     return Question.query.filter(
@@ -32,9 +34,11 @@ def get_unanswered_question(category, answered_question_ids):
         Question.id.notin_(answered_question_ids)
     ).order_by(db.func.random()).first()
 
+
 # Helper function to calculate the opposite face of a dice roll
 def get_opposite_face(roll):
     return 7 - roll
+
 
 # Helper function to update the score
 def update_score(game_data, roll, category):
@@ -67,6 +71,7 @@ def select_category():
     game_data = get_or_create_active_game_data(current_user.id)
     return render_template('select_category.html', title='انتخاب دسته‌بندی', stage=game_data.stage,
                            progress=game_data.progress, score=game_data.score, num_questions=NUM_QUESTIONS_PER_STAGE)
+
 
 # Route to get a question from selected category
 @game.route("/question/<category>")
@@ -102,6 +107,7 @@ def question(category):
 
     return render_template('question.html', title='سوال', question=question, answers=answers)
 
+
 # Route to handle the answer submission
 @game.route("/answer", methods=['POST'])
 @login_required
@@ -115,8 +121,16 @@ def answer():
     game_data = get_or_create_active_game_data(current_user.id)
     category = session.get('current_category')
 
+    # Check if the question has already been answered in the current game
+    answered_question = AnsweredQuestion.query.filter_by(user_id=current_user.id, question_id=question_id,
+                                                         game_data_id=game_data.id).first()
+    if answered_question:
+        flash('شما قبلا به این سوال پاسخ داده‌اید.', 'info')
+        return redirect(url_for('game.select_category'))
+
     if selected_answer == question.correct_answer:
-        flash(f'پاسخ درست بود! وجه بالای تاس {dice_roll} و وجه پایین تاس {get_opposite_face(dice_roll)} است.', 'success')
+        flash(f'پاسخ درست بود! وجه بالای تاس {dice_roll} و وجه پایین تاس {get_opposite_face(dice_roll)} است.',
+              'success')
         answer_score = update_score(game_data, dice_roll, category)
         answered_correctly = True
     elif session.get('start_time') and current_time - session['start_time'] > 25:
@@ -161,12 +175,14 @@ def answer():
     db.session.commit()
     return redirect(url_for('game.select_category'))
 
+
 # Route to show current game result
 @game.route("/result")
 @login_required
 def result():
     game_data = get_or_create_active_game_data(current_user.id)
     return render_template('result.html', title='نتیجه', game_data=game_data, num_questions=NUM_QUESTIONS_PER_STAGE)
+
 
 # Route to show final result after game ends
 @game.route("/final_result")
