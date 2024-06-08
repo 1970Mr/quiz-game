@@ -116,7 +116,7 @@ def answer():
     category = session.get('current_category')
 
     if selected_answer == question.correct_answer:
-        flash(f'پاسخ درست بود! شما تاس {dice_roll} را انداختید. وجه مقابل آن {get_opposite_face(dice_roll)} است.', 'success')
+        flash(f'پاسخ درست بود! وجه بالای تاس {dice_roll} و وجه پایین تاس {get_opposite_face(dice_roll)} است.', 'success')
         answer_score = update_score(game_data, dice_roll, category)
         answered_correctly = True
     elif session.get('start_time') and current_time - session['start_time'] > 25:
